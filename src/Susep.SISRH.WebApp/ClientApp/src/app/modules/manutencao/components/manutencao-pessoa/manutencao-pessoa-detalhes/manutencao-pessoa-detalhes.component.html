@@ -1,0 +1,71 @@
+<section>
+    <div class="container">
+      <header class="content-header pb-5 pb-sm-8 pt-3">
+        <h1 class="content-title">
+          {{pessoa.nome}} |
+          <small>{{unidade.sigla}}</small>
+        </h1>
+        <p>Veja os detalhes da unidade</p>
+      </header>
+      <form>
+        <div class="br-form">
+          <div class="row">
+            <div class="col-sm-4 mb-5">
+              <dl class="row">
+                <dt class="col-sm-4">Id da Pessoa:</dt>
+                <dd class="col-sm-8">{{pessoa.pessoaId}}</dd>
+              </dl>
+              <dl class="row">
+                <dt class="col-sm-4">Nome:</dt>
+                <dd class="col-sm-8">{{pessoa.nome}}</dd>
+              </dl>
+              <dl class="row">
+                <dt class="col-sm-4">E-mail:</dt>
+                <dd class="col-sm-8" *ngIf="pessoa.email != ''; else empty">{{pessoa.email}}</dd>
+              </dl>
+              <dl class="row">
+                <dt class="col-sm-4">Situacao:</dt>
+                <dd class="col-sm-8" *ngIf="pessoa.situacaoPessoaId != 0; else empty">{{situacao.Descricao}}</dd>
+              </dl>            
+            </div>
+            <div class="col-sm-4 mb-5">
+              <dl class="row">
+                <dt class="col-sm-4">CPF:</dt>
+                <dd class="col-sm-8" *ngIf="pessoa.cpf != ''; else empty">{{pessoa.cpf}}</dd>
+              </dl>
+              <dl class="row">
+                <dt class="col-sm-4">Unidade:</dt>
+                <dd class="col-sm-8" *ngIf="pessoa.unidadeId != 0; else empty">{{unidade.sigla}} | {{unidade.nome}}</dd>
+              </dl>
+              <dl class="row">
+                <dt class="col-sm-4">Data de Nascimento:</dt>
+                <dd class="col-sm-8" *ngIf="data != ''; else empty">{{data}}</dd>
+              </dl>
+              <dl class="row">
+                <dt class="col-sm-4">Tipo Vinculo:</dt>
+                <dd class="col-sm-8">{{vinculo.Descricao}}</dd>
+              </dl>
+            </div>
+            <div class="col-sm-4 mb-5">
+              <dl class="row">              
+                <dt class="col-sm-4">Tipo Função:</dt>
+                <dd class="col-sm-8" *ngIf="pessoa.tipoFuncaoId != null; else empty">{{pessoa.tipoFuncaoId}}</dd>
+              </dl>
+              <dl class="row">
+                <dt class="col-sm-4">Carga Horária:</dt>
+                <dd class="col-sm-8" *ngIf="pessoa.cargaHorariaDb != 0; else empty">{{pessoa.cargaHoraria}}</dd>
+              </dl>
+              <dl class="row">
+                <dt class="col-sm-4">Matrícula Siape:</dt>
+                <dd class="col-sm-8" *ngIf="pessoa.matriculaSiape != ''; else empty">{{pessoa.matriculaSiape}}</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  
+  <ng-template #empty>
+    <dd class="col-sm-8">-</dd>
+  </ng-template>

@@ -1,0 +1,68 @@
+<section>
+  <div class="container">
+    <header class="content-header pb-5 pb-sm-8 pt-3">
+      <h1 class="content-title">
+        {{unidade.sigla}} |
+        <small>{{unidade.nome}}</small>
+      </h1>
+      <p>Veja os detalhes da unidade</p>
+    </header>
+    <form>
+      <div class="br-form">
+        <div class="row">
+          <div class="col-sm-4 mb-5">
+            <dl class="row">
+              <dt class="col-sm-4">Id da Unidade:</dt>
+              <dd class="col-sm-8">{{unidade.unidadeId}}</dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-sm-4">Unidade Pai:</dt>
+              <dd class="col-sm-8" *ngIf="temPai; else empty">{{unidadePai.sigla}} | {{unidadePai.nome}}</dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-sm-4">E-mail:</dt>
+              <dd class="col-sm-8" *ngIf="unidade.email != ''; else empty">{{unidade.email}}</dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-sm-4">Situacao:</dt>
+              <dd class="col-sm-8" *ngIf="unidade.situacaoUnidadeId == 0" >Inativo</dd>
+              <dd class="col-sm-8" *ngIf="unidade.situacaoUnidadeId == 1" >Ativo</dd>
+            </dl>            
+          </div>
+          <div class="col-sm-4 mb-5">
+            <dl class="row">
+              <dt class="col-sm-4">Chefe:</dt>
+              <dd class="col-sm-8" *ngIf="chefeNome != ''; else empty">{{chefeNome}}</dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-sm-4">Chefe Substituto:</dt>
+              <dd class="col-sm-8" *ngIf="chefeSubstitutoNome != ''; else empty">{{chefeSubstitutoNome}}</dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-sm-4">UF:</dt>
+              <dd class="col-sm-8">{{unidade.ufId}}</dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-sm-4">Nível:</dt>
+              <dd class="col-sm-8">{{unidade.nivel}}</dd>
+            </dl>
+          </div>
+          <div class="col-sm-4 mb-5">
+            <dl class="row">              
+              <dt class="col-sm-4">Código SIORG:</dt>
+              <dd class="col-sm-8" *ngIf="unidade.codSiorg != 0; else empty">{{unidade.codSiorg}}</dd>
+            </dl>
+            <dl class="row">
+              <dt class="col-sm-4">Código SGC:</dt>
+              <dd class="col-sm-8" *ngIf="unidade.codSgc != 0; else empty">{{unidade.codSgc}}</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<ng-template #empty>
+  <dd class="col-sm-8">-</dd>
+</ng-template>

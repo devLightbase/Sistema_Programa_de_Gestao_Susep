@@ -12,12 +12,12 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<CatalogoDominio> builder)
         {
-            builder.ToTable("dbo", "ProgramaGestao");
+            builder.ToTable("dbo", "programagestao");
 
             builder.HasKey(p => p.CatalogoDominioId);
 
             builder.Property(p => p.CatalogoDominioId)
-                   .HasColumnName("catalogoDominioId");
+                   .HasColumnName("catalogodominioid");
 
             builder.Property(p => p.Classificacao)
                    .HasColumnName("classificacao")

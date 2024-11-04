@@ -8,14 +8,14 @@
             get
             {
                 return @"
-					SELECT o.objetoId,
+					SELECT o.objetoid,
                            o.descricao,
                            o.tipo,
                            o.chave,
                            o.ativo
-                    FROM [ProgramaGestao].[Objeto] o
-                    WHERE (@chave IS NULL OR o.chave LIKE '%' + @chave + '%')  
-                    AND   (@descricao IS NULL OR o.descricao LIKE '%' + @descricao + '%')  
+                    FROM programagestao.objeto o
+                    WHERE (@chave IS NULL OR o.chave LIKE '%' || @chave || '%')  
+                    AND   (@descricao IS NULL OR o.descricao LIKE '%' || @descricao || '%')  
                     AND   (@tipo IS NULL OR o.tipo = @tipo)  
                     ORDER BY o.descricao
 
@@ -23,9 +23,9 @@
                     FETCH NEXT @PageSize ROWS ONLY;
 
                     SELECT COUNT(*)
-                    FROM [ProgramaGestao].[Objeto] o
-                    WHERE (@chave IS NULL OR o.chave LIKE '%' + @chave + '%')  
-                    AND   (@descricao IS NULL OR o.descricao LIKE '%' + @descricao + '%')  
+                    FROM programagestao.objeto o
+                    WHERE (@chave IS NULL OR o.chave LIKE '%' || @chave || '%')  
+                    AND   (@descricao IS NULL OR o.descricao LIKE '%' || @descricao || '%')  
                     AND   (@tipo IS NULL OR o.tipo = @tipo)  
                 ";
             }
@@ -36,12 +36,12 @@
             get
             {
                 return @"
-					SELECT o.objetoId,
+					SELECT o.objetoid,
                            o.descricao,
                            o.tipo,
                            o.chave,
                            o.ativo
-                    FROM [ProgramaGestao].[Objeto] o
+                    FROM programagestao.objeto o
                     WHERE o.objetoId = @id
                 ";
             }
@@ -53,8 +53,8 @@
             {
                 return @"
 					SELECT COUNT(1)
-                    FROM [ProgramaGestao].[Objeto] o
-                    WHERE (@objetoId IS NULL OR o.objetoId != @objetoId)
+                    FROM programagestao.objeto o
+                    WHERE (@objetoId IS NULL OR o.objetoid != @objetoId)
                     AND   @chave = o.chave
                 ";
             }
@@ -65,15 +65,15 @@
             get
             {
                 return @"
-                    SELECT o.objetoId
+                    SELECT o.objetoid
                            ,o.chave
                            ,o.descricao
                            ,o.tipo
                            ,o.ativo
-                    FROM [ProgramaGestao].[Objeto] o
-                    WHERE o.ativo = 1
-                    AND   (lower(o.chave) like '%' + lower(@texto) + '%'
-                    OR    lower(o.descricao) like '%' + lower(@texto) + '%')
+                    FROM programagestao.objeto o
+                    WHERE o.ativo = true
+                    AND   (lower(o.chave) like '%' || lower(@texto) || '%'
+                    OR    lower(o.descricao) like '%' || lower(@texto) || '%')
                     ORDER BY o.chave, o.descricao
                 ";
             }

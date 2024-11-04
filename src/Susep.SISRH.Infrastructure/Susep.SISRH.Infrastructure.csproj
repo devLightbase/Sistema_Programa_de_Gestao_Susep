@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -6,24 +6,76 @@
 
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SUSEP.Framework.Data" Version="3.6.8" />
-    <PackageReference Include="SUSEP.Framework.Utils" Version="3.8.5" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Susep.SISRH.Domain\Susep.SISRH.Domain.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="SeedWorks">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.SeedWorks.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Result">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.Result.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CoreFilters">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.CoreFilters.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Data">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.Data.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Messages">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.Messages.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Utils">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.Utils.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MessageBroker">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.MessageBroker.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
   </ItemGroup>
 
 </Project>

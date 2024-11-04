@@ -17,7 +17,7 @@ namespace Susep.SISRH.Infrastructure.Repositories
         public PessoaRepository(SISRHDbContext context) : base(context) {
             _context = context;
         }
-
+        
         public async Task<Pessoa> ObterAsync(long pessoaId)
         {
             return await Entity
@@ -26,11 +26,16 @@ namespace Susep.SISRH.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.PessoaId == pessoaId);
         }
 
+        public async Task<Pessoa> ObterPessoaDBAsync(long pessoaId)
+        {
+            var item = await Entity.FindAsync(pessoaId);
+            return item;
+        }
+
         public async Task<Pessoa> ObterPorCriteriosAsync(string email, string cpf)
         {
             List<Pessoa> retorno = null;
-            IQueryable<Pessoa> pessoa = Entity
-                .Include(p => p.Unidade);
+            IQueryable<Pessoa> pessoa = Entity.Include(p => p.Unidade);
 
             //Filtra inicialmente somente pelo CPF (se tiver enviado o CPF para filtrar)
             if (!string.IsNullOrEmpty(cpf))
@@ -55,6 +60,16 @@ namespace Susep.SISRH.Infrastructure.Repositories
             }
 
             return retorno.FirstOrDefault();
+        }
+        public async Task<Pessoa> AdicionarAsync(Pessoa item)
+        {
+            var result = await Entity.AddAsync(item);
+            return result.Entity;
+        }
+
+        public void Atualizar(Pessoa item)
+        {
+            _context.Entry(item).State = EntityState.Modified;
         }
     }
 }

@@ -21,6 +21,9 @@ namespace Susep.SISRH.Application.ViewModels
         [DataMember(Name = "unidadeIdPai")]
         public Int64? UnidadeIdPai { get; set; }
 
+        //[DataMember(Name = "nomePai")]
+        //public String nomePai { get; set; }
+
         [DataMember(Name = "tipoUnidadeId")]
         public Int64 TipoUnidadeId { get; set; }
 
@@ -44,5 +47,17 @@ namespace Susep.SISRH.Application.ViewModels
 
         [DataMember(Name = "quantidadeServidores")]
         public Int32 QuantidadeServidores { get; set; }
+
+        [DataMember(Name = "pessoaIdChefe")]
+        public Int64 PessoaIdChefe { get; set; }
+
+        [DataMember(Name = "pessoaIdChefeSubstituto")]
+        public Int64 PessoaIdChefeSubstituto { get; set; }
+
+        [DataMember(Name = "codSiorg")]
+        public Int64 codSiorg { get; set; }
+
+        [DataMember(Name = "codSgc")]
+        public Int64 codSgc { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<ItemCatalogoAssunto> builder)
         {
-            builder.ToTable("ItemCatalogoAssunto", "ProgramaGestao");
+            builder.ToTable("itemcatalogoassunto", "programagestao");
 
             builder.HasKey(p => p.ItemCatalogoAssuntoId);
 
@@ -18,17 +18,17 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.ItemCatalogoAssuntoId)
-                   .HasColumnName("itemCatalogoAssuntoId")
+                   .HasColumnName("itemcatalogoassuntoid")
                    .ValueGeneratedOnAdd();
 
-            builder.Property(p => p.ItemCatalogoId).HasColumnName("itemCatalogoId");
+            builder.Property(p => p.ItemCatalogoId).HasColumnName("itemcatalogoid");
 
-            builder.Property(p => p.AssuntoId).HasColumnName("assuntoId");
+            builder.Property(p => p.AssuntoId).HasColumnName("assuntoid");
 
             builder.HasOne(p => p.Assunto)
                    .WithMany()
                    .HasForeignKey(p => p.AssuntoId)
-                   .HasConstraintName("FK_ItemCatalogoAssunto_Assunto");
+                   .HasConstraintName("fk_itemcatalogoassunto_assunto");
 
         }
 

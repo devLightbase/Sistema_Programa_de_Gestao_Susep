@@ -42,7 +42,8 @@ export class AssuntoPesquisaComponent implements OnInit {
       this.dadosUltimaPesquisa.page = pagina;
   
       this.assuntoDataService.ObterPagina(this.dadosUltimaPesquisa)
-        .subscribe(resultado => this.dadosEncontrados = resultado.retorno);
+        .subscribe(resultado => {
+          this.dadosEncontrados = resultado.retorno});
     }
 
   }

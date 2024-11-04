@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PactoTrabalhoSolicitacao> builder)
         {
-            builder.ToTable("PactoTrabalhoSolicitacao", "ProgramaGestao");
+            builder.ToTable("pactotrabalhosolicitacao", "programagestao");
 
             builder.HasKey(p => p.PactoTrabalhoSolicitacaoId);
 
@@ -18,30 +18,30 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.PactoTrabalhoSolicitacaoId)
-                .HasColumnName("pactoTrabalhoSolicitacaoId")
+                .HasColumnName("pactotrabalhosolicitacaoid")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(p => p.PactoTrabalhoId).HasColumnName("pactoTrabalhoId");
-            builder.Property(p => p.TipoSolicitacaoId).HasColumnName("tipoSolicitacaoId");
-            builder.Property(p => p.DataSolicitacao).HasColumnName("dataSolicitacao");
+            builder.Property(p => p.PactoTrabalhoId).HasColumnName("pactotrabalhoid");
+            builder.Property(p => p.TipoSolicitacaoId).HasColumnName("tiposolicitacaoid");
+            builder.Property(p => p.DataSolicitacao).HasColumnName("datasolicitacao");
             builder.Property(p => p.Solicitante).HasColumnName("solicitante");
-            builder.Property(p => p.DadosSolicitacao).HasColumnName("dadosSolicitacao");
-            builder.Property(p => p.ObservacoesSolicitante).HasColumnName("observacoesSolicitante");
+            builder.Property(p => p.DadosSolicitacao).HasColumnName("dadossolicitacao");
+            builder.Property(p => p.ObservacoesSolicitante).HasColumnName("observacoessolicitante");
             builder.Property(p => p.Analisado).HasColumnName("analisado");
-            builder.Property(p => p.DataAnalise).HasColumnName("dataAnalise");
+            builder.Property(p => p.DataAnalise).HasColumnName("dataanalise");
             builder.Property(p => p.Analista).HasColumnName("analista");
             builder.Property(p => p.Aprovado).HasColumnName("aprovado");
-            builder.Property(p => p.ObservacoesAnalista).HasColumnName("observacoesAnalista");
+            builder.Property(p => p.ObservacoesAnalista).HasColumnName("observacoesanalista");
 
             builder.HasOne(p => p.PactoTrabalho)
                    .WithMany(p => p.Solicitacoes)
                    .HasForeignKey(p => p.PactoTrabalhoId)
-                   .HasConstraintName("FK_PactoTrabalhoSolicitacao_PactoTrabalho");
+                   .HasConstraintName("fk_pactotrabalhosolicitacao_pactotrabalho");
 
             builder.HasOne(p => p.TipoSolicitacao)
                    .WithMany(p => p.PactosTrabalhoSolicitacoes)
                    .HasForeignKey(p => p.TipoSolicitacaoId)
-                   .HasConstraintName("FK_PactoTrabalhoSolicitacao_ItemCatalogo");
+                   .HasConstraintName("fk_pactotrabalhosolicitacao_tiposolicitacao");
 
         }
 

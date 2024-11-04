@@ -8,24 +8,24 @@
             get
             {
                 return @"
-                    SELECT  planoTrabalhoId
-                            ,p.unidadeId
-                            ,u.undSiglaCompleta unidade
-                            ,dataInicio
-                            ,dataFim
-                            ,tempoComparecimento
-                            ,tempoFaseHabilitacao
-                            ,situacaoId
+					SELECT  planotrabalhoid
+                            ,p.unidadeid
+                            ,u.undsiglacompleta unidade
+                            ,datainicio
+                            ,datafim
+                            ,tempocomparecimento
+                            ,tempofasehabilitacao
+                            ,situacaoid
 							,cd.descricao situacao 
-                            ,totalServidoresSetor
+                            ,totalservidoressetor
                             ,(SELECT count(1) 
-                                FROM [ProgramaGestao].[PlanoTrabalhoAtividadeCandidato] ptac
-                                INNER JOIN [ProgramaGestao].[PlanoTrabalhoAtividade] pta ON ptac.planoTrabalhoAtividadeId = pta.planoTrabalhoAtividadeId
-                              WHERE pta.planoTrabalhoId = @planoTrabalhoId AND ptac.situacaoId = 804) totalServidoresAprovados
-                    FROM [ProgramaGestao].[PlanoTrabalho] p
-	                    INNER JOIN [dbo].[VW_UnidadeSiglaCompleta] u ON u.unidadeId = p.unidadeId   
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON p.situacaoId = cd.catalogoDominioId 
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
+                                FROM programagestao.planotrabalhoatividadecandidato ptac
+                                INNER JOIN programagestao.planotrabalhoatividade pta ON ptac.planotrabalhoatividadeid = pta.planotrabalhoatividadeid
+                              WHERE pta.planotrabalhoid = @planotrabalhoid AND ptac.situacaoid = 804) totalservidoresaprovados
+                    		FROM programagestao.planotrabalho p
+								INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid   
+								INNER JOIN dbo.catalogodominio cd ON p.situacaoid = cd.catalogodominioid 
+							WHERE p.planotrabalhoid = @planotrabalhoid
                 ";
             }
         }
@@ -35,41 +35,43 @@
             get
             {
                 return @"
-					SELECT  p.planoTrabalhoAtividadeId
-                            ,p.planoTrabalhoId
-                            ,p.modalidadeExecucaoId
-							,cd.descricao modalidadeExecucao 
-                            ,p.quantidadeColaboradores
+					SELECT  p.planotrabalhoatividadeid
+                            ,p.planotrabalhoid
+                            ,p.modalidadeexecucaoid
+							,cd.descricao modalidadeexecucao 
+                            ,p.quantidadecolaboradores
                             ,p.descricao
-                    FROM [ProgramaGestao].[PlanoTrabalhoAtividade] p
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON p.modalidadeExecucaoId = cd.catalogoDominioId 
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId;
+                    FROM programagestao.planotrabalhoatividade p
+	                    INNER JOIN dbo.catalogoDominio cd ON p.modalidadeexecucaoid = cd.catalogodominioid 
+                    WHERE p.planotrabalhoid = @planotrabalhoid;
                             
-                    SELECT  pa.planoTrabalhoAtividadeId
-                            ,pa.planoTrabalhoAtividadeItemId
-                            ,pa.itemCatalogoId                            
-                            ,i.titulo + IIF(i.complexidade IS NULL OR i.complexidade = '', '', ' - ' + i.complexidade) as itemCatalogo
-                            ,i.complexidade as itemCatalogoComplexidade
-                    FROM [ProgramaGestao].[PlanoTrabalhoAtividadeItem] pa
-                        INNER JOIN [ProgramaGestao].[PlanoTrabalhoAtividade] p ON pa.planoTrabalhoAtividadeId = p.planoTrabalhoAtividadeId
-	                    INNER JOIN [ProgramaGestao].[ItemCatalogo] i ON pa.itemCatalogoId = i.itemCatalogoId 
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
-                            
-                    SELECT  pa.planoTrabalhoAtividadeId
-                            ,pa.planoTrabalhoAtividadeCriterioId
-                            ,pa.criterioId
-                            ,i.descricao as criterio
-                    FROM [ProgramaGestao].[PlanoTrabalhoAtividadeCriterio] pa
-                        INNER JOIN [ProgramaGestao].[PlanoTrabalhoAtividade] p ON pa.planoTrabalhoAtividadeId = p.planoTrabalhoAtividadeId
-	                    INNER JOIN [dbo].[CatalogoDominio] i ON pa.criterioId = i.catalogoDominioId 
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
+                    SELECT  pa.planotrabalhoatividadeid
+                            ,pa.planotrabalhoatividadeitemid
+                            ,pa.itemcatalogoid                            
+                            ,i.titulo || CASE WHEN i.complexidade IS NULL OR i.complexidade = '' THEN '' ELSE ' - ' || i.complexidade END itemcatalogo
+                            ,i.complexidade as itemcatalogocomplexidade
+                    FROM programagestao.planotrabalhoatividadeitem pa
+                        INNER JOIN programagestao.planotrabalhoatividade p ON pa.planotrabalhoatividadeid = p.planotrabalhoatividadeid
+	                    INNER JOIN programagestao.itemcatalogo i ON pa.itemcatalogoid = i.itemcatalogoid 
+                    WHERE p.planotrabalhoid = @planotrabalhoid;
 
-                    SELECT pa.planoTrabalhoAtividadeAssuntoId
-                          ,pa.planoTrabalhoAtividadeId
-	                      ,pa.assuntoId
-                    FROM [ProgramaGestao].[PlanoTrabalhoAtividade] p
-                    LEFT OUTER JOIN [ProgramaGestao].[PlanoTrabalhoAtividadeAssunto] pa ON p.planoTrabalhoAtividadeId = pa.planoTrabalhoAtividadeId
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
+                    SELECT  pa.planotrabalhoatividadeid
+                            ,pa.planotrabalhoatividadecriterioid
+                            ,pa.criterioid
+                            ,i.descricao as criterio
+                    FROM programagestao.planotrabalhoatividadecriterio pa
+                        INNER JOIN programagestao.planotrabalhoatividade p ON pa.planotrabalhoatividadeid = p.planotrabalhoatividadeid
+	                    INNER JOIN dbo.catalogodominio i ON pa.criterioid = i.catalogodominioid 
+                    WHERE p.planotrabalhoid = @planotrabalhoid;
+
+                    SELECT pa.planotrabalhoatividadeassuntoid
+                          ,pa.planotrabalhoatividadeid
+	                      ,pa.assuntoid
+                    FROM programagestao.planotrabalhoatividade p
+                    LEFT OUTER JOIN programagestao.planotrabalhoatividadeassunto pa ON p.planotrabalhoatividadeid = pa.planotrabalhoatividadeid
+                    WHERE p.planotrabalhoid = @planotrabalhoid;
+                            
+                   
                 ";
             }
         }
@@ -81,12 +83,12 @@
             {
                 return @"
 					SELECT  planoTrabalhoMetaId
-                            ,planoTrabalhoId
+                            ,planotrabalhoid
                             ,meta
                             ,indicador
                             ,descricao
-                    FROM [ProgramaGestao].[PlanoTrabalhoMeta] p
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
+                    FROM programagestao.planotrabalhoMeta p
+                    WHERE p.planotrabalhoid = @planotrabalhoid
                 ";
             }
         }
@@ -96,13 +98,13 @@
             get
             {
                 return @"
-					SELECT  planoTrabalhoReuniaoId
-                            ,planoTrabalhoId
+					SELECT  planotrabalhoreuniaoid
+                            ,planotrabalhoid
                             ,data
                             ,titulo
                             ,descricao
-                    FROM [ProgramaGestao].[PlanoTrabalhoReuniao] p
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
+                    FROM programagestao.planotrabalhoreuniao p
+                    WHERE p.planotrabalhoid = @planotrabalhoid
                 ";
             }
         }
@@ -112,12 +114,12 @@
             get
             {
                 return @"
-					SELECT  planoTrabalhoCustoId
-                            ,planoTrabalhoId
+					SELECT  planotrabalhocustoid
+                            ,planotrabalhoid
                             ,valor
                             ,descricao
-                    FROM [ProgramaGestao].[PlanoTrabalhoCusto] p
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
+                    FROM programagestao.planotrabalhocusto p
+                    WHERE p.planotrabalhoid = @planotrabalhoid
                 ";
             }
         }
@@ -127,18 +129,18 @@
             get
             {
                 return @"
-					SELECT  planoTrabalhoId
-                            ,p.planoTrabalhoHistoricoId
-                            ,situacaoId
+					SELECT  planotrabalhoid
+                            ,p.planotrabalhohistoricoid
+                            ,situacaoid
 							,cd.descricao situacao 
                             ,observacoes
-                            ,ISNULL(pe.pesNome, responsavelOperacao) responsavelOperacao
-                            ,dataOperacao
-                    FROM [ProgramaGestao].[PlanoTrabalhoHistorico] p  
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON p.situacaoId = cd.catalogoDominioId 
-	                    LEFT OUTER JOIN [dbo].[Pessoa] pe ON p.responsavelOperacao = CAST(pe.pessoaId AS VARCHAR(12))
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
-                    ORDER BY dataOperacao DESC
+                            ,COALESCE(pe.pesNome, responsaveloperacao) responsaveloperacao
+                            ,dataoperacao
+                    FROM programagestao.planotrabalhoHistorico p  
+	                    INNER JOIN dbo.catalogodominio cd ON p.situacaoid = cd.catalogodominioid 
+	                    LEFT OUTER JOIN dbo.pessoa pe ON p.responsaveloperacao = CAST(pe.pessoaid AS VARCHAR(12))
+                    WHERE p.planotrabalhoid = @planotrabalhoid
+                    ORDER BY dataoperacao DESC
                 ";
             }
         }
@@ -150,35 +152,35 @@
             get
             {
                 return @"
-					SELECT  planoTrabalhoId
-                            ,p.unidadeId
+					SELECT  planotrabalhoid
+                            ,p.unidadeid
                             ,u.undSiglaCompleta unidade
-                            ,dataInicio
-                            ,dataFim
-                            ,tempoComparecimento
-                            ,tempoFaseHabilitacao
-                            ,situacaoId
+                            ,datainicio
+                            ,datafim
+                            ,tempocomparecimento
+                            ,tempofasehabilitacao
+                            ,situacaoid
 							,cd.descricao situacao 
-                    FROM [ProgramaGestao].[PlanoTrabalho] p
-	                    INNER JOIN [dbo].[VW_UnidadeSiglaCompleta] u ON u.unidadeId = p.unidadeId    
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON p.situacaoId = cd.catalogoDominioId 
-                    WHERE   (@situacaoId IS NULL OR p.situacaoId = @situacaoId)
-                            AND (@dataInicio IS NULL OR p.dataFim >= @dataInicio)
-                            AND (@dataFim IS NULL OR p.dataInicio <= @dataFim)
+                    FROM programagestao.planotrabalho p
+	                    INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid    
+	                    INNER JOIN dbo.catalogodominio cd ON p.situacaoid = cd.catalogodominioid 
+                    WHERE   (@situacaoid IS NULL OR p.situacaoid = @situacaoid)
+                            AND (@datainicio IS NULL OR p.datafim >= @datainicio)
+                            AND (@datafim IS NULL OR p.datainicio <= @datafim)
                             #UNIDADES#
 
-                    ORDER BY dataInicio DESC, dataFim DESC, u.undSiglaCompleta
+                    ORDER BY datainicio DESC, datafim DESC, u.undSiglaCompleta
 
                     OFFSET @Offset ROWS
                     FETCH NEXT @PageSize ROWS ONLY;
 
                     SELECT COUNT(*)
-                    FROM [ProgramaGestao].[PlanoTrabalho] p
-	                    INNER JOIN [dbo].[VW_UnidadeSiglaCompleta] u ON u.unidadeId = p.unidadeId    
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON p.situacaoId = cd.catalogoDominioId 
-                    WHERE   (@situacaoId IS NULL OR p.situacaoId = @situacaoId)
-                            AND (@dataInicio IS NULL OR p.dataFim >= @dataInicio)
-                            AND (@dataFim IS NULL OR p.dataInicio <= @dataFim)
+                    FROM programagestao.planotrabalho p
+	                    INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid    
+	                    INNER JOIN dbo.catalogodominio cd ON p.situacaoid = cd.catalogodominioid 
+                    WHERE   (@situacaoid IS NULL OR p.situacaoid = @situacaoid)
+                            AND (@datainicio IS NULL OR p.datafim >= @datainicio)
+                            AND (@datafim IS NULL OR p.datainicio <= @datafim)
                             #UNIDADES#
                 ";
             }
@@ -191,16 +193,16 @@
             get
             {
                 return @"
-                    SELECT  c.planoTrabalhoAtividadeCandidatoId
-                            ,c.planoTrabalhoAtividadeId
-		                    ,p.pessoaId
+                    SELECT  c.planotrabalhoatividadecandidatoid
+                            ,c.planotrabalhoatividadeid
+		                    ,p.pessoaid
 		                    ,p.pesNome nome
-                            ,situacaoId
+                            ,situacaoid
 							,cd.descricao situacao 
-                    FROM [ProgramaGestao].[PlanoTrabalhoAtividadeCandidato] c
-                        INNER JOIN [dbo].[Pessoa] p ON p.pessoaId = c.pessoaId
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON c.situacaoId = cd.catalogoDominioId 
-                    WHERE c.planoTrabalhoAtividadeId = @planoTrabalhoAtividadeId
+                    FROM programagestao.planotrabalhoatividadecandidato c
+                        INNER JOIN dbo.pessoa p ON p.pessoaid = c.pessoaid
+	                    INNER JOIN dbo.catalogodominio cd ON c.situacaoid = cd.catalogodominioid 
+                    WHERE c.planotrabalhoatividadeid = @planotrabalhoatividadeid
                     ORDER BY p.pesNome
                 ";
             }
@@ -212,19 +214,19 @@
             {
                 return @"
                     SELECT  DISTINCT
-                            c.planoTrabalhoAtividadeCandidatoId
-                            ,c.planoTrabalhoAtividadeId
-		                    ,p.pessoaId
+                            c.planotrabalhoatividadecandidatoid
+                            ,c.planotrabalhoatividadeid
+		                    ,p.pessoaid
 		                    ,p.pesNome nome
-                            ,c.situacaoId
+                            ,c.situacaoid
 							,cd.descricao situacao 
                             ,h.descricao
-                    FROM [ProgramaGestao].[PlanoTrabalhoAtividadeCandidato] c
-                        INNER JOIN [ProgramaGestao].[PlanoTrabalhoAtividade] pl ON c.planoTrabalhoAtividadeId = pl.planoTrabalhoAtividadeId
-                        INNER JOIN [dbo].[Pessoa] p ON p.pessoaId = c.pessoaId
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON c.situacaoId = cd.catalogoDominioId 
-                        LEFT OUTER JOIN [ProgramaGestao].[PlanoTrabalhoAtividadeCandidatoHistorico] h ON c.planoTrabalhoAtividadeCandidatoId = h.planoTrabalhoAtividadeCandidatoId AND c.situacaoId = h.situacaoId
-                    WHERE pl.planoTrabalhoId = @planoTrabalhoId
+                    FROM programagestao.planotrabalhoatividadecandidato c
+                        INNER JOIN programagestao.planotrabalhoatividade pl ON c.planotrabalhoatividadeid = pl.planotrabalhoatividadeid
+                        INNER JOIN dbo.pessoa p ON p.pessoaid = c.pessoaid
+	                    INNER JOIN dbo.catalogodominio cd ON c.situacaoid = cd.catalogodominioid 
+                        LEFT OUTER JOIN programagestao.planotrabalhoatividadecandidatoHistorico h ON c.planotrabalhoatividadecandidatoid = h.planotrabalhoatividadecandidatoid AND c.situacaoid = h.situacaoid
+                    WHERE pl.planotrabalhoid = @planotrabalhoid
                     ORDER BY p.pesNome
                 ";
             }
@@ -236,29 +238,29 @@
             get
             {
                 return @"
-					SELECT  planoTrabalhoId
-                            ,p.unidadeId
-                            ,u.undSiglaCompleta unidade
-                            ,dataInicio
-                            ,dataFim
-                            ,tempoComparecimento
-                            ,tempoFaseHabilitacao
-                            ,situacaoId
+					SELECT  planotrabalhoid
+                            ,p.unidadeid
+                            ,u.undsiglacompleta unidade
+                            ,datainicio
+                            ,datafim
+                            ,tempocomparecimento
+                            ,tempofasehabilitacao
+                            ,situacaoid
 							,cd.descricao situacao 
-                            ,totalServidoresSetor 
+                            ,totalservidoressetor 
                             ,(SELECT count(1) 
-                                FROM [ProgramaGestao].[PlanoTrabalhoAtividadeCandidato] ptac
-                                INNER JOIN [ProgramaGestao].[PlanoTrabalhoAtividade] pta ON ptac.planoTrabalhoAtividadeId = pta.planoTrabalhoAtividadeId
-                              WHERE pta.planoTrabalhoId = p.planoTrabalhoId AND ptac.situacaoId = 804) totalServidoresAprovados
-                    FROM [ProgramaGestao].[PlanoTrabalho] p
-	                    INNER JOIN [dbo].[VW_UnidadeSiglaCompleta] u ON u.unidadeId = p.unidadeId   
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON p.situacaoId = cd.catalogoDominioId 
-                    WHERE p.unidadeId = (SELECT case when p1.tipoFuncaoId IS NOT NULL THEN u.unidadeIdPai ELSE u.unidadeId END 
-					                     FROM [dbo].[Pessoa] p1 
-						                    LEFT OUTER JOIN [dbo].[PessoaAlocacaoTemporaria] a ON a.pessoaId = p1.pessoaId AND a.dataFim IS NULL
-	                                        INNER JOIN [dbo].[VW_UnidadeSiglaCompleta] u ON u.unidadeId = COALESCE(a.unidadeId, p1.unidadeId) 
-						                 WHERE p1.pessoaId = @pessoaId)
-                        AND situacaoId = @situacao
+                                FROM programagestao.planotrabalhoatividadecandidato ptac
+                                INNER JOIN programagestao.planotrabalhoatividade pta ON ptac.planotrabalhoatividadeid = pta.planotrabalhoatividadeid
+                              WHERE pta.planotrabalhoid = p.planotrabalhoid AND ptac.situacaoid = 804) totalservidoresaprovados
+							  
+							 FROM programagestao.planotrabalho p
+								INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid   
+								INNER JOIN dbo.catalogodominio cd ON p.situacaoid = cd.catalogodominioid 
+							 WHERE p.unidadeid = (SELECT case when p1.tipoFuncaoId IS NOT NULL THEN u.unidadeidPai ELSE u.unidadeid END 
+												 FROM dbo.pessoa p1 
+													INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p1.unidadeid 
+													WHERE pessoaid = @pessoaid)
+								AND situacaoid = @situacao
                 ";
             }
         }
@@ -268,10 +270,10 @@
             get
             {
                 return @"
-					SELECT  planoTrabalhoId
+					SELECT  planotrabalhoid
                             ,termoAceite
-                    FROM [ProgramaGestao].[PlanoTrabalho] p
-                    WHERE p.planoTrabalhoId = @planoTrabalhoId
+                    FROM programagestao.planotrabalho p
+                    WHERE p.planotrabalhoid = @planotrabalhoid
                 ";
             }
         }
@@ -281,15 +283,15 @@
             get
             {
                 return @"
-                    SELECT  c.planoTrabalhoAtividadeCandidatoId
-                            ,c.planoTrabalhoAtividadeId
+                    SELECT  c.planotrabalhoatividadecandidatoid
+                            ,c.planotrabalhoatividadeid
 		                    ,p.pesNome nome
-                            ,situacaoId
+                            ,situacaoid
 							,cd.descricao situacao 
-                    FROM [ProgramaGestao].[PlanoTrabalhoAtividadeCandidato] c
-                        INNER JOIN [dbo].[Pessoa] p ON p.pessoaId = c.pessoaId
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON c.situacaoId = cd.catalogoDominioId 
-                    WHERE p.pessoaId = @pessoaId
+                    FROM programagestao.planotrabalhoatividadecandidato c
+                        INNER JOIN dbo.pessoa p ON p.pessoaid = c.pessoaid
+	                    INNER JOIN dbo.catalogodominio cd ON c.situacaoid = cd.catalogodominioid 
+                    WHERE p.pessoaid = @pessoaid
                   
                     ORDER BY p.pesNome
                 ";
@@ -301,14 +303,14 @@
             get
             {
                 return @"
-                    SELECT c.pessoaId
-                           ,pa.modalidadeExecucaoId 
-	                       ,cd.descricao modalidadeExecucao                            
-                    FROM [ProgramaGestao].[PlanoTrabalhoAtividadeCandidato] c
-	                    INNER JOIN [ProgramaGestao].[PlanoTrabalhoAtividade] pa ON c.[planoTrabalhoAtividadeId] = pa.[planoTrabalhoAtividadeId]
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON pa.modalidadeExecucaoId = cd.catalogoDominioId 
-                    WHERE pa.[planoTrabalhoId] = @planoTrabalhoId
-	                    AND c.[situacaoId] = @situacaoAprovada 
+                    SELECT c.pessoaid
+                           ,pa.modalidadeexecucaoid 
+	                       ,cd.descricao modalidadeexecucao                            
+                    FROM programagestao.planotrabalhoatividadecandidato c
+	                    INNER JOIN programagestao.planotrabalhoatividade pa ON c.planotrabalhoatividadeid = pa.planotrabalhoatividadeid
+	                    INNER JOIN dbo.catalogodominio cd ON pa.modalidadeexecucaoid = cd.catalogodominioid 
+                    WHERE pa.planotrabalhoid = @planotrabalhoid
+	                    AND c.situacaoid = @situacaoAprovada 
                 ";
             }
         }
@@ -318,36 +320,36 @@
             get
             {
                 return @"
-                    SELECT pto.planoTrabalhoId
-                           ,pto.planoTrabalhoObjetoId
-                           ,o.objetoId
+                    SELECT pto.planotrabalhoid
+                           ,pto.planotrabalhoobjetoid
+                           ,o.objetoid
 	                       ,o.descricao
 	                       ,o.chave
                            ,o.tipo		
-	                       ,CASE WHEN COUNT(papo.pactoAtividadePlanoObjetoId) > 0 THEN 1 ELSE 0 END AS associadoAtividadePlano
-                    FROM [ProgramaGestao].[PlanoTrabalhoObjeto] pto
-                    INNER JOIN [ProgramaGestao].[Objeto] o ON pto.objetoId = o.objetoId
-                    LEFT OUTER JOIN [ProgramaGestao].[PactoAtividadePlanoObjeto] papo ON papo.planoTrabalhoObjetoId = pto.planoTrabalhoObjetoId
-                    WHERE pto.planoTrabalhoId = @planoTrabalhoId
-                    AND   o.ativo = 1
-                    GROUP BY pto.planoTrabalhoId
-                           ,pto.planoTrabalhoObjetoId
-                           ,o.objetoId
+	                       ,CASE WHEN COUNT(papo.pactoatividadeplanoobjetoid) > 0 THEN 1 ELSE 0 END AS associadoatividadeplano
+                    FROM programagestao.planotrabalhoobjeto pto
+                    INNER JOIN programagestao.objeto o ON pto.objetoid = o.objetoid
+                    LEFT OUTER JOIN programagestao.pactoatividadeplanoobjeto papo ON papo.planotrabalhoobjetoid = pto.planotrabalhoobjetoid
+                    WHERE pto.planotrabalhoid = @planotrabalhoid
+                    AND   o.ativo = true
+                    GROUP BY pto.planotrabalhoid
+                           ,pto.planotrabalhoobjetoid
+                           ,o.objetoid
 	                       ,o.descricao
 	                       ,o.chave
                            ,o.tipo
                     ORDER BY o.descricao;
 
-                    SELECT pa.planoTrabalhoObjetoAssuntoId
-                           ,pa.planoTrabalhoObjetoId
-                           ,a.assuntoId
+                    SELECT pa.planotrabalhoobjetoassuntoId
+                           ,pa.planotrabalhoobjetoid
+                           ,a.assuntoid
                            ,a.valor
                            ,a.hierarquia
-                    FROM [ProgramaGestao].[PlanoTrabalhoObjeto] pto
-						INNER JOIN [ProgramaGestao].[PlanoTrabalhoObjetoAssunto] pa ON pa.planoTrabalhoObjetoId = pto.planoTrabalhoObjetoId
-						INNER JOIN [ProgramaGestao].[VW_AssuntoChaveCompleta] a ON pa.assuntoId = a.assuntoId
-						INNER JOIN [ProgramaGestao].[Objeto] o ON pto.objetoId = o.objetoId
-                    WHERE pto.planoTrabalhoId = @planoTrabalhoId;
+                    FROM programagestao.planotrabalhoobjeto pto
+						INNER JOIN programagestao.planotrabalhoobjetoassunto pa ON pa.planotrabalhoobjetoid = pto.planotrabalhoobjetoid
+						INNER JOIN programagestao.vw_assuntochavecompleta a ON pa.assuntoid = a.assuntoid
+						INNER JOIN programagestao.objeto o ON pto.objetoid = o.objetoid
+                    WHERE pto.planotrabalhoid = @planotrabalhoid;
                 ";
             }
         }
@@ -357,39 +359,39 @@
             get
             {
                 return @"
-                    SELECT pto.planoTrabalhoId
-                           ,pto.planoTrabalhoObjetoId
-                           ,o.objetoId
+                    SELECT pto.planotrabalhoid
+                           ,pto.planotrabalhoobjetoid
+                           ,o.objetoid
 	                       ,o.descricao
 	                       ,o.chave
 	                       ,o.tipo
-                    FROM [ProgramaGestao].[PlanoTrabalhoObjeto] pto
-                    INNER JOIN [ProgramaGestao].[Objeto] o ON pto.objetoId = o.objetoId
-                    WHERE pto.planoTrabalhoObjetoId = @planoTrabalhoObjetoId;
+                    FROM programagestao.planotrabalhoobjeto pto
+                   INNER JOIN programagestao.objeto o ON pto.objetoid = o.objetoid
+                    WHERE pto.planotrabalhoobjetoid = @planotrabalhoobjetoid;
 
-                    SELECT pa.planoTrabalhoObjetoAssuntoId
-                           ,pa.planoTrabalhoObjetoId
-                           ,a.assuntoId
+                    SELECT pa.planotrabalhoobjetoassuntoid
+                           ,pa.planotrabalhoobjetoid
+                           ,a.assuntoid
                            ,a.valor
                            ,a.hierarquia
-                    FROM [ProgramaGestao].PlanoTrabalhoObjetoAssunto pa
-                    INNER JOIN [ProgramaGestao].[VW_AssuntoChaveCompleta] a ON pa.assuntoId = a.assuntoId
-                    WHERE pa.planoTrabalhoObjetoId = @planoTrabalhoObjetoId;
+                    FROM programagestao.planotrabalhoobjetoassunto pa
+                    INNER JOIN programagestao.vw_assuntochavecompleta a ON pa.assuntoid = a.assuntoid
+                    WHERE pa.planotrabalhoobjetoid = @planotrabalhoobjetoid;
 
-                    SELECT pc.planoTrabalhoCustoId
-                           ,pc.planoTrabalhoId
+                    SELECT pc.planotrabalhocustoid
+                           ,pc.planotrabalhoid
 	                       ,pc.valor
 	                       ,pc.descricao
-                    FROM [ProgramaGestao].[PlanoTrabalhoCusto] pc
-                    WHERE pc.planoTrabalhoObjetoId = @planoTrabalhoObjetoId;
+                    FROM programagestao.planotrabalhocusto pc
+                    WHERE pc.planotrabalhoobjetoid = @planotrabalhoobjetoid;
 
                     SELECT pr.planoTrabalhoReuniaoId
-                           ,pr.planoTrabalhoId
+                           ,pr.planotrabalhoid
 	                       ,pr.titulo
 	                       ,pr.data
 	                       ,pr.descricao
-                    FROM [ProgramaGestao].[PlanoTrabalhoReuniao] pr
-                    WHERE pr.planoTrabalhoObjetoId = @planoTrabalhoObjetoId;
+                    FROM programagestao.planotrabalhoreuniao pr
+                    WHERE pr.planotrabalhoobjetoid = @planotrabalhoobjetoid;
                 ";
             }
         }
@@ -399,26 +401,26 @@
             get
             {
                 return @"
-                    SELECT po.planoTrabalhoObjetoId
-                            ,o.objetoId
+                    SELECT po.planotrabalhoobjetoid
+                            ,o.objetoid
                             ,o.descricao
-                    FROM [ProgramaGestao].[PlanoTrabalhoObjeto] po
-                    INNER JOIN [ProgramaGestao].[Objeto] o ON po.objetoId = o.objetoId
-                    WHERE po.planoTrabalhoId = @planoTrabalhoId;
+                    FROM programagestao.planotrabalhoobjeto po
+                    INNER JOIN programagestao.objeto o ON po.objetoid = o.objetoid
+                    WHERE po.planotrabalhoid = @planotrabalhoid;
 
-                    SELECT po.planoTrabalhoObjetoId
-                            ,a.[assuntoId]
-                            ,a.[hierarquia] valor
-                    FROM [ProgramaGestao].[PlanoTrabalhoObjetoAssunto] poa
-						INNER JOIN [ProgramaGestao].[PlanoTrabalhoObjeto] po ON poa.planoTrabalhoObjetoId = po.planoTrabalhoObjetoId
-						INNER JOIN [ProgramaGestao].[VW_AssuntoChaveCompleta] a ON poa.assuntoId = a.assuntoId
-                    WHERE po.planoTrabalhoId = @planoTrabalhoId;
+                    SELECT po.planotrabalhoobjetoid
+                            ,a.assuntoid
+                            ,a.hierarquia valor
+                    FROM programagestao.planotrabalhoobjetoassunto poa
+						INNER JOIN programagestao.planotrabalhoobjeto po ON poa.planotrabalhoobjetoid = po.planotrabalhoobjetoid
+						INNER JOIN programagestao.vw_assuntochavecompleta a ON poa.assuntoid = a.assuntoid
+                    WHERE po.planotrabalhoid = @planotrabalhoid;
 
-                    SELECT p.planoTrabalhoObjetoId
-                    FROM [ProgramaGestao].[PactoAtividadePlanoObjeto] p
-                    INNER JOIN [ProgramaGestao].[PlanoTrabalhoObjeto] po ON p.planoTrabalhoObjetoId = po.planoTrabalhoObjetoId
-                    WHERE po.planoTrabalhoId = @planoTrabalhoId
-                    AND   (@pactoTrabalhoAtividadeId IS NOT NULL AND p.pactoTrabalhoAtividadeId = @pactoTrabalhoAtividadeId);                
+                    SELECT p.planotrabalhoobjetoid
+                    FROM programagestao.pactoatividadeplanoobjeto p
+                    INNER JOIN programagestao.planotrabalhoobjeto po ON p.planotrabalhoobjetoid = po.planotrabalhoobjetoid
+                    WHERE po.planotrabalhoid = @planotrabalhoid
+                    AND   (@pactotrabalhoatividadeid IS NOT NULL AND p.pactotrabalhoatividadeid = @pactotrabalhoatividadeid);                
                 ";
             }
         }

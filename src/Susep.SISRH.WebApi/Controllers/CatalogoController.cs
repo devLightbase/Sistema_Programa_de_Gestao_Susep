@@ -43,6 +43,52 @@ namespace Susep.SISRH.WebApi.Controllers
         public async Task<IActionResult> GetAll([FromQuery] CatalogoFiltroRequest request)
             => await CatalogoQuery.ObterPorFiltroAsync(request);
 
+        /// <summary>
+        /// Obtém os catálogo dominio
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("catalogo-dominio"), Produces("application/json", Type = typeof(IApplicationResult<IEnumerable<CatalogoDominioViewModel>>))]
+        public async Task<IActionResult> GetAllCatalogoDominio([FromQuery] CatalogoDominioFiltroRequest request)
+            => await CatalogoQuery.ObterCatalogoDominioPorFiltroAsync(request);
+
+
+        /// <summary>
+        /// Obtém as pg por unidade
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("pg"), Produces("application/json", Type = typeof(IApplicationResult<IEnumerable<PgViewModel>>))]
+        public async Task<IActionResult> GetAllPg([FromQuery] PgUnidadeFiltroRequest request)
+            => await CatalogoQuery.ObterPgUnidadeAsync(request);
+
+        /// <summary>
+        /// Obtém as programa gestao
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("pg/programa-gestao"), Produces("application/json", Type = typeof(IApplicationResult<IEnumerable<ProgramaGestaoModalViewModel>>))]
+        public async Task<IActionResult> GetAllProgramaGestao([FromQuery] ProgramaGestaoModalFiltroRequest request)
+            => await CatalogoQuery.ObterProgramaGestaoModal(request);
+
+        /// <summary>
+        /// Obtém os pactos vigentes
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("pg/pactos-vigentes"), Produces("application/json", Type = typeof(IApplicationResult<IEnumerable<PactosVigentesModalViewModel>>))]
+        public async Task<IActionResult> GetAllPactosVigentes([FromQuery] PactosVigentesModalFiltroRequest request)
+            => await CatalogoQuery.ObterPactosVigentesModal(request);
+
+        /// <summary>
+        /// Obtém contagens
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet("pg/contagem"), Produces("application/json", Type = typeof(IApplicationResult<ContagemViewModel>))]
+        public async Task<IActionResult> GetContagem()
+            => await CatalogoQuery.ObterContagem();
+
 
         /// <summary>
         /// Obtém o catálogo de uma unidade

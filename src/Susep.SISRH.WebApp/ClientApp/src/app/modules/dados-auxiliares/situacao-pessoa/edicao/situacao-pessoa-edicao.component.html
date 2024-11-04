@@ -1,0 +1,43 @@
+<section>
+  <div class="container">
+    <header class="content-header pb-5 pb-sm-8 pt-3">
+      <h1 class="content-title">Situação Pessoa</h1>
+      <p>Preencha os campos abaixo para cadastrar uma nova situação ou altere os dados para editar uma situação
+        existente</p>
+    </header>
+    <form [formGroup]="form">
+      <div class="br-form">
+        <div class="row">
+          <div class="col-12">
+            <div class="field">
+              <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório."
+                label="Descrição*">
+                <input id="Descricao" type="text" placeholder="Insira um título para a situação"
+                  formControlName="Descricao">
+              </field-validation>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="field">
+              <field-validation [classList]="['br-select', 'is-medium']" label="Situação*">
+                <select id="Situacao" name="Situacao" formControlName="Situacao">
+                  <option value="1">Ativo</option>
+                  <option value="0">Inativo</option>
+                </select>
+              </field-validation>
+            </div>
+          </div>
+        </div>
+        <div class="actions justify-content-start">
+          <!-- <secure-input [perfis]="[PerfilEnum.GestorIndicadores]"> -->
+          <button class="br-button is-primary" type="submit" (click)="salvar()" [disabled]="!form.valid">Salvar</button>
+          <!-- </secure-input> -->
+          <button class="br-button is-cancel mr-2" type="button"
+            [routerLink]="['/situacao-pessoa/pesquisa']">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

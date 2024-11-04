@@ -10,37 +10,37 @@
                 return @"
 					
                     SELECT
-                        pacto.pactoTrabalhoId PactoTrabalhoId 
-                        ,pes.pesMatriculaSiape MatriculaSIAPE 
-                        ,pes.pesCPF CPF 
-                        ,pes.pesNome pessoa 
-                        ,und.undCodigoSIORG CodigoUnidadeSIORGExercicio 
-                        ,und.undSiglaCompleta NomeUnidadeSIORGExercicio 
-                        ,CASE WHEN pacto.formaExecucaoId = 101 THEN 1 ELSE 2 END FormaExecucaoId 
-                        ,(pes.CargaHoraria * 5) CargaHorariaSemanal 
-                        ,pacto.dataInicio DataInicio 
-                        ,pacto.dataFim DataFim 
-                        ,pacto.tempoTotalDisponivel CargaHorariaTotal
-                    FROM [ProgramaGestao].[PactoTrabalho] pacto
-	                    INNER JOIN [dbo].[Pessoa] pes ON pes.pessoaId = pacto.pessoaId
-	                    INNER JOIN [dbo].[VW_UnidadeSiglaCompleta] und on und.unidadeId = pes.unidadeId
+                        pacto.pactotrabalhoid PactoTrabalhoId 
+                        ,pes.pesmatriculasiape MatriculaSIAPE 
+                        ,pes.pescpf CPF 
+                        ,pes.pesnome pessoa 
+                        ,und.undcodigosiorg CodigoUnidadeSIORGExercicio 
+                        ,und.undsiglacompleta NomeUnidadeSIORGExercicio 
+                        ,CASE WHEN pacto.formaexecucaoid = 101 THEN 1 ELSE 2 END FormaExecucaoId 
+                        ,(pes.cargahoraria * 5) CargaHorariaSemanal 
+                        ,pacto.datainicio datainicio 
+                        ,pacto.datafim datafim 
+                        ,pacto.tempototaldisponivel cargahorariatotal
+                    FROM programagestao.pactotrabalho pacto
+	                    INNER JOIN dbo.pessoa pes ON pes.pessoaid = pacto.pessoaid
+	                    INNER JOIN dbo.vw_unidadesiglacompleta und on und.unidadeid = pes.unidadeid
 
 
                     SELECT
-                        pitem.pactoTrabalhoId
-                        ,item.itemCatalogoId ItemCatalogoId 
+                        pitem.pactotrabalhoid
+                        ,item.itemcatalogoid ItemCatalogoId 
                         ,item.titulo Titulo 
                         ,item.complexidade Complexidade 
-                        ,item.definicaoComplexidade DefinicaoComplexidade 
-                        ,item.tempoPresencial TempoExecucaoPresencial 
-                        ,item.tempoRemoto TempoExecucaoRemoto 
-                        ,item.entregasEsperadas EntregasEsperadas 
+                        ,item.definicaocomplexidade DefinicaoComplexidade 
+                        ,item.tempopresencial TempoExecucaoPresencial 
+                        ,item.temporemoto TempoExecucaoRemoto 
+                        ,item.entregasesperadas EntregasEsperadas 
                         ,pitem.quantidade QuantidadeEntregas 
                         ,pitem.quantidade QuantidadeEntregasRealizadas 
                         ,pitem.nota Nota 
                         ,pitem.justificativa Justificativa 
-                    FROM [ProgramaGestao].[PactoTrabalhoAtividade] pitem
-	                    INNER JOIN [ProgramaGestao].[ItemCatalogo] item ON pitem.itemCatalogoId = item.itemCatalogoId
+                    FROM programagestao.pactotrabalhoatividade pitem
+	                    INNER JOIN programagestao.itemcatalogo item ON pitem.itemcatalogoid = item.itemcatalogoid
 
 
                 ";

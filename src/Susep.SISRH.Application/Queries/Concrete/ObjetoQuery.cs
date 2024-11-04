@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 using Susep.SISRH.Application.Queries.Abstractions;
 using Susep.SISRH.Application.Queries.RawSql;
 using Susep.SISRH.Application.Requests;
@@ -38,7 +39,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -65,7 +66,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@id", id, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -85,7 +86,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             parameters.Add("@chave", chave, DbType.String, ParameterDirection.Input);
             parameters.Add("@objetoId", objetoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -108,7 +109,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@texto", texto, DbType.String, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 

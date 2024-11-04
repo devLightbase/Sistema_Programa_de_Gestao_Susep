@@ -42,7 +42,7 @@ namespace Susep.SISRH.Application.Auth
                 string cpfMok = null;
                 switch (context.UserName)
                 {
-                    case "sisgp_gestor": cpfMok = "08056275029"; break;
+                    case "sisgp_gestor": cpfMok = "73719706087"; break;
                     case "sisgp_cg": cpfMok = "95387502500"; break;
                     case "sisgp_coget": cpfMok = "43321040565"; break;
                     case "sisgp_coordenador": cpfMok = "25715446597"; break;

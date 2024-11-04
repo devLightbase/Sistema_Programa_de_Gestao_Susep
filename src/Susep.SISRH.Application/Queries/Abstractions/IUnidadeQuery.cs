@@ -12,9 +12,12 @@ namespace Susep.SISRH.Application.Queries.Abstractions
     public interface IUnidadeQuery
     {
         Task<IApplicationResult<IEnumerable<UnidadeViewModel>>> ObterAtivasAsync();
+        Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterUnidadesCombo();
+
         Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterAtivasDadosComboAsync();
         Task<IApplicationResult<IEnumerable<UnidadeViewModel>>> ObterComPlanoTrabalhoAsync();
         Task<IApplicationResult<UnidadeViewModel>> ObterPorChaveAsync(Int64 unidadeId);
+        Task<IApplicationResult<UnidadeViewModel>> ObterUnidadePorChaveAsync(Int64 unidadeId);
         Task<IApplicationResult<UnidadeViewModel>> ObterQuantidadeServidoresPorChaveAsync(Int64 unidadeId);
         Task<IApplicationResult<IEnumerable<DateTime>>> ObterFeriadosPorUnidadeAsync(Int64 unidadeId, DateTime dataInicio, DateTime dataFim);
         Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterModalidadesExecucaoAsync(Int64 unidadeId);
@@ -24,5 +27,7 @@ namespace Susep.SISRH.Application.Queries.Abstractions
         Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterSubordinadasAsync(Int64 unidadeId);        
         Task<IApplicationResult<IEnumerable<UnidadeViewModel>>> ObterComCatalogoCadastradoComboAsync();
         Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterSemCatalogoCadastradoComboAsync();
+        Task<IApplicationResult<DadosPaginadosViewModel<UnidadeViewModel>>> ObterAtivasTotal(UnidadeFiltroRequest request);
+        Task<IApplicationResult<bool>> ValorDuplicadoAsync(string sigla, string descricao, Int64 unidadeId);
     }
 }

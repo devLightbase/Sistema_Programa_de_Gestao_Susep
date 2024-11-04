@@ -1,0 +1,131 @@
+<section>
+    <div class="container">
+        <header class="content-header pb-5 pb-sm-8 pt-3">
+            <h1 class="content-title">Pessoa</h1>
+            <p>Preencha os campos abaixo para cadastrar uma nova pessoa ou altere os dados para editar uma pessoa
+                existente</p>
+        </header>
+        <form [formGroup]="form">
+            <div class="br-form">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório."
+                                label="Nome*">
+                                <input id="nome" type="text" placeholder="Insira o nome da pessoa"
+                                    formControlName="nome">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" errorMessage="Campo obrigatório."
+                                label="Unidade*">
+                                <select id="unidadeId" name="unidadeId" formControlName="unidadeId">
+                                    <option value="" disabled selected>Selecione uma unidade</option>
+                                    <option *ngFor="let unidade of unidades" [value]="unidade.id">{{ unidade.descricao
+                                        }}</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório."
+                                label="Carga Horária*">
+                                <input id="cargaHorariaDb" type="text" formControlName="cargaHorariaDb">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Função">
+                                <select id="tipoFuncaoId" name="tipoFuncaoId" formControlName="tipoFuncaoId">
+                                    <option value="null">Selecione uma função</option>
+                                    <option *ngFor="let funcao of funcoes" [value]="funcao.id">{{ funcao.descricao
+                                        }}</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" label="E-mail">
+                                <input id="email" placeholder="Insira o e-mail da pessoa" type="text"
+                                    formControlName="email">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="field">
+                            <!-- <label style="color: #333333;
+                            font-family: Rawline;
+                            font-size: 16px;
+                            font-style: normal;
+                            font-weight: 600;
+                            line-height: normal;">Data de Nascimento*</label> -->
+                            <field-validation [classList]="['br-input', 'is-medium']" label="Data de Nascimento">
+                                <custom-datepicker [minDate]="{year: 1900, month: 1, day: 1}" id="dataNascimento"
+                                    formControlName="dataNascimento">
+                                </custom-datepicker>
+                            </field-validation>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório."
+                                label="CPF*">
+                                <input [textMask]="{mask: cpfcnpjmask}" type="text" id="cpf"
+                                    placeholder="Insira o CPF da pessoa" formControlName="cpf">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" label="Matricula SIAPE">
+                                <input id="matriculaSiape" type="text" placeholder="Insira a matricula siape"
+                                    formControlName="matriculaSiape">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Situação">
+                                <select id="situacaoPessoaId" name="situacaoPessoaId"
+                                    formControlName="situacaoPessoaId">
+                                    <option class="select-items" *ngFor="let situacao of situacoes"
+                                        [value]="situacao.id">
+                                        {{ situacao.descricao }}</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Vinculo">
+                                <select id="tipoVinculoId" name="tipoVinculoId" formControlName="tipoVinculoId">
+                                    <option value="0">Selecione o vinculo</option>
+                                    <option class="select-items" *ngFor="let vinculo of vinculos" [value]="vinculo.id">
+                                        {{
+                                        vinculo.descricao }}</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions justify-content-start">
+                    <!-- <secure-input [perfis]="[PerfilEnum.GestorIndicadores]"> -->
+                    <button class="br-button is-primary" type="submit" (click)="salvar()"
+                        [disabled]="!form.valid">Salvar</button>
+                    <!-- </secure-input> -->
+                    <button class="br-button is-cancel mr-2" type="button"
+                        [routerLink]="['/manutencao-pessoa']">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

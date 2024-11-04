@@ -1,0 +1,61 @@
+<section>
+    <div class="container">
+      <header class="content-header pb-5 pb-sm-8 pt-3">
+        <h1 class="content-title">Tipo de Função</h1>
+        <p>Preencha os campos abaixo para cadastrar um novo tipo de função ou altere os dados para editar um tipo existente</p>
+      </header>
+      <form [formGroup]="form">
+        <div class="br-form">
+          <div class="row">
+            <div class="col-12">
+              <div class="field">
+                <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório." label="Descrição*">
+                  <input id="Descricao" type="text" placeholder="Insira um título para o tipo de função" formControlName="Descricao">
+                </field-validation>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="field">
+                <field-validation [classList]="['br-input', 'is-medium']" label="Código Função">
+                  <input id="CodigoFuncao" type="text" placeholder="Insira o código da função" formControlName="CodigoFuncao">
+                </field-validation>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="field">
+                <field-validation [classList]="['br-select', 'is-medium']" label="Situação*">
+                  <select id="Situacao" name="Situacao" formControlName="Situacao">
+                    <option value="1">Ativo</option>
+                    <option value="0">Inativo</option>
+                  </select>
+                </field-validation>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12" *ngIf="tipofuncao">
+              <div class="field">
+                <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório." label="Indicador de Chefia*">
+                  <mat-slide-toggle formControlName="IndicadorChefia">
+                    <span class="pt-2" *ngIf="tipofuncao.IndicadorChefia">Sim</span>
+                    <span class="pt-2" *ngIf="!tipofuncao.IndicadorChefia">Não</span>
+                  </mat-slide-toggle>
+                </field-validation>
+              </div>
+            </div>
+          </div>
+          <div class="actions justify-content-start">
+            <!-- <secure-input [perfis]="[PerfilEnum.GestorIndicadores]"> -->
+              <button class="br-button is-primary" type="submit" (click)="salvar()" [disabled]="!form.valid">Salvar</button>
+            <!-- </secure-input> -->
+            <button class="br-button is-cancel mr-2" type="button" [routerLink]="['/tipo-funcao/pesquisa']">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  

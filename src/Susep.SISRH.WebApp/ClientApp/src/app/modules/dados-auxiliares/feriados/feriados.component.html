@@ -1,0 +1,97 @@
+<section>
+    <div class="container">
+        <header class="content-header pb-5 pb-sm-8 pt-3">
+            <h1 class="content-title">Feriados</h1>
+            <p>Veja a lista de feriados cadastrados</p>
+        </header>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="br-form">
+                <fieldset>
+                    <div class="row">
+                        <!-- <div class="col-6">
+                            <div class="field">
+                                <label for="data">Data</label>
+                                <field-validation [classList]="['br-input']">
+                                    <custom-datepicker [minDate]="{year: 1900, month: 1, day: 1}" id="data"
+                                        formControlName="data">
+                                    </custom-datepicker>
+                                </field-validation>
+                            </div>
+                        </div> -->
+                        <!-- <div class="col-6">
+                            <div class="field">
+                                <div class="br-input">
+                                    <label for="data">Data</label>
+                                    <custom-datepicker [minDate]="{year: 1900, month: 1, day: 1}" id="data"
+                                        formControlName="data">
+                                    </custom-datepicker>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-12">
+                            <div class="field">
+                                <div class="br-input">
+                                    <label for="descricao">Descrição</label>
+                                    <input id="descricao" type="text" formControlName="descricao"
+                                        placeholder="Insira um texto para filtrar">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="actions justify-content-start">
+                    <button class="br-button is-primary ml-2" type="submit"><i class="fa fa-search"></i>
+                        Filtrar</button>
+                    <!-- <secure-input [perfis]="[PerfilEnum.CoordenadorGeral, PerfilEnum.ChefeUnidade]"> -->
+                    <button class="br-button is-secondary" type="button"
+                        [routerLink]="['/feriados/cadastro']">Cadastrar Feriado</button>
+                    <!-- </secure-input> -->
+                </div>
+            </div>
+        </form>
+        <div>
+            <div class="table-responsive">
+                <div class="br-table">
+                    <div class="table">
+                        <table class="full-width-table table-striped table-style mat-elevation-z8">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>UF</th>
+                                    <th>Data Fixa</th>
+                                    <th>Situacao</th>
+                                    <th style="width:70px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of dadosEncontrados?.registros">
+                                    <td>{{dataAtualFormatada(item.Data)}}</td>
+                                    <td>{{item.Descricao}}</td>
+                                    <td>{{item.UfId}}</td>
+                                    <td *ngIf="item.Fixo">Sim</td>
+                                    <td *ngIf="!item.Fixo">Não</td>
+                                    <td *ngIf="item.Situacao">Ativo</td>
+                                    <td *ngIf="!item.Situacao">Inativo</td>
+                                    <td>
+                                        <a href="javascript:void(0)"
+                                            [routerLink]="['/feriados/editar/' + item.FeriadoId]"><i
+                                                class="fa fa-edit"></i></a>
+                                        <a href="javascript:void(0)" (click)="excluirItem(item.FeriadoId)"><i
+                                                class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" *ngIf="dadosEncontrados?.controle.totalRegistros === 0"
+                                        class="text-center">Nenhum item encontrado</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-pagination [controlePaginacao]="dadosEncontrados?.controle"
+                            (changePage)="changePage($event)"></app-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

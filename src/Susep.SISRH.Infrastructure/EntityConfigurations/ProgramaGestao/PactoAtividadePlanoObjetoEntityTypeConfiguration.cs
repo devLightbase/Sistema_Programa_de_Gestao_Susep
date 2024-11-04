@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PactoAtividadePlanoObjeto> builder)
         {
-            builder.ToTable("PactoAtividadePlanoObjeto", "ProgramaGestao");
+            builder.ToTable("pactoatividadeplanoobjeto", "programagestao");
 
             builder.HasKey(p => p.PactoAtividadePlanoObjetoId);
 
@@ -18,21 +18,21 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.PactoAtividadePlanoObjetoId)
-                .HasColumnName("pactoAtividadePlanoObjetoId")
+                .HasColumnName("pactoatividadeplanoobjetoid")
                 .ValueGeneratedOnAdd();
 
-            builder.Property(p => p.PlanoTrabalhoObjetoId).HasColumnName("planoTrabalhoObjetoId");
-            builder.Property(p => p.PactoTrabalhoAtividadeId).HasColumnName("pactoTrabalhoAtividadeId");
+            builder.Property(p => p.PlanoTrabalhoObjetoId).HasColumnName("planotrabalhoobjetoid");
+            builder.Property(p => p.PactoTrabalhoAtividadeId).HasColumnName("pactotrabalhoatividadeid");
 
             builder.HasOne(p => p.PactoTrabalhoAtividade)
                    .WithMany(p => p.Objetos)
                    .HasForeignKey(p => p.PactoTrabalhoAtividadeId)
-                   .HasConstraintName("FK_PactoAtividadePlanoObjeto_PactoTrabalhoAtividade");
+                   .HasConstraintName("fk_pactoatividadeplanoobjeto_pactotrabalhoatividade");
 
             builder.HasOne(p => p.PlanoTrabalhoObjeto)
                    .WithMany()
                    .HasForeignKey(p => p.PlanoTrabalhoObjetoId)
-                   .HasConstraintName("FK_PactoAtividadePlanoObjeto_PlanoTrabalhoObjeto");
+                   .HasConstraintName("fk_pactoatividadeplanoobjeto_planotrabalhoobjeto");
 
         }
 

@@ -8,21 +8,21 @@
             get
             {
                 return @"
-					SELECT a.assuntoId,
+					SELECT a.assuntoid,
                            a.valor,
                            a.hierarquia,
                            a.nivel,
                            a.ativo
-                    FROM [ProgramaGestao].[VW_AssuntoChaveCompleta] a
-                    WHERE (@valor IS NULL OR a.hierarquia LIKE '%' + @valor + '%')  
+                    FROM programagestao.vw_assuntochavecompleta a
+                    WHERE (@valor IS NULL OR a.valor LIKE '%' || @valor || '%')  
                     ORDER BY a.hierarquia
 
                     OFFSET @Offset ROWS
                     FETCH NEXT @PageSize ROWS ONLY;
 
                     SELECT COUNT(*)
-                    FROM [ProgramaGestao].[VW_AssuntoChaveCompleta] a
-                    WHERE (@valor IS NULL OR a.valor LIKE '%' + @valor + '%')  
+                    FROM programagestao.vw_assuntochavecompleta a
+                    WHERE (@valor IS NULL OR a.valor LIKE '%' || @valor || '%')  
                 ";
             }
         }
@@ -32,18 +32,18 @@
             get
             {
                 return @"
-                    select a.assuntoId, a.valor, a.assuntoPaiId, a.ativo
-                    from ProgramaGestao.Assunto a
-                    where a.assuntoId = @id
+                    select a.assuntoid, a.valor, a.assuntopaiid, a.ativo
+                    from programagestao.Assunto a
+                    where a.assuntoid = @id
 
                     UNION
 
-                    select p.assuntoId, p.valor, p.assuntoPaiId, p.ativo
-                    from ProgramaGestao.Assunto p
-                    where p.assuntoId = (
-	                    select a.assuntoPaiId
-	                    from ProgramaGestao.Assunto a
-	                    where a.assuntoId = @id
+                    select p.assuntoid, p.valor, p.assuntopaiid, p.ativo
+                    from programagestao.Assunto p
+                    where p.assuntoid = (
+	                    select a.assuntopaiid
+	                    from programagestao.Assunto a
+	                    where a.assuntoid = @id
                     );                
                 ";
             }
@@ -58,8 +58,8 @@
                            a.hierarquia,
                            a.nivel,
                            a.ativo
-                    FROM [ProgramaGestao].[VW_AssuntoChaveCompleta] a
-                    WHERE a.ativo = 1
+                    FROM programagestao.vw_assuntochavecompleta a
+                    WHERE a.ativo = true
                     ORDER BY a.hierarquia;                
                 ";
             }
@@ -70,15 +70,15 @@
             get
             {
                 return @"
-                    SELECT a.assuntoId,
+                    SELECT a.assuntoid,
                             a.valor,
                             a.hierarquia,
                             a.nivel,
                             a.ativo
-                    FROM [ProgramaGestao].[VW_AssuntoChaveCompleta] a
-                    WHERE a.ativo = 1
-                    AND  (lower(a.valor) like '%' + lower(@texto) + '%' 
-                    OR    lower(a.hierarquia) like '%' + lower(@texto) + '%')
+                    FROM programagestao.vw_assuntochavecompleta a
+                    WHERE a.ativo = true
+                    AND  (lower(a.valor) like '%' || lower(@texto) || '%' 
+                    OR    lower(a.hierarquia) like '%' || lower(@texto) || '%')
                     ORDER BY a.hierarquia;                
                 ";
             }
@@ -93,24 +93,24 @@
 
 	                    -- Nível corrente
 	                    SELECT 
-		                    assuntoId, 
-		                    assuntoPaiId 
-	                    FROM ProgramaGestao.Assunto
-	                    WHERE assuntoId = @assuntoId
+		                    assuntoid, 
+		                    assuntopaiid 
+	                    FROM programagestao.Assunto
+	                    WHERE assuntoid = @assuntoid
 
 	                    UNION ALL
 
 	                    -- Todos os pais
 	                    SELECT 
-		                    pai.assuntoId, 
-		                    pai.assuntoPaiId 
-	                    FROM ProgramaGestao.Assunto pai
-	                    JOIN cte_assuntos_pais corrente ON pai.assuntoId = corrente.assuntoPaiId
+		                    pai.assuntoid, 
+		                    pai.assuntopaiid 
+	                    FROM programagestao.Assunto pai
+	                    JOIN cte_assuntos_pais corrente ON pai.assuntoid = corrente.assuntopaiid
 
                     )
-                    SELECT assuntoId
+                    SELECT assuntoid
                     FROM cte_assuntos_pais
-                    WHERE assuntoId <> @assuntoId;
+                    WHERE assuntoid <> @assuntoid;
                 ";
             }
         }
@@ -124,24 +124,24 @@
 
 	                    -- Nível corrente
 	                    SELECT 
-		                    assuntoId, 
-		                    assuntoPaiId 
-	                    FROM ProgramaGestao.Assunto
-	                    WHERE assuntoId = @assuntoId
+		                    assuntoid, 
+		                    assuntopaiid 
+	                    FROM programagestao.Assunto
+	                    WHERE assuntoid = @assuntoid
 
 	                    UNION ALL
 
 	                    -- Todos os filhos
 	                    SELECT 
-		                    filho.assuntoId, 
-		                    filho.assuntoPaiId 
-	                    FROM ProgramaGestao.Assunto filho
-	                    JOIN cte_assuntos_filhos corrente ON filho.assuntoPaiId = corrente.assuntoId
+		                    filho.assuntoid, 
+		                    filho.assuntopaiid 
+	                    FROM programagestao.Assunto filho
+	                    JOIN cte_assuntos_filhos corrente ON filho.assuntopaiid = corrente.assuntoid
 
                     )
-                    SELECT assuntoId
+                    SELECT assuntoid
                     FROM cte_assuntos_filhos
-                    WHERE assuntoId <> @assuntoId;
+                    WHERE assuntoid <> @assuntoid;
                 ";
             }
         }
@@ -152,9 +152,9 @@
             {
                 return @"
                     SELECT COUNT(1)
-                    FROM ProgramaGestao.Assunto a
+                    FROM programagestao.Assunto a
                     WHERE UPPER(LTRIM(RTRIM(a.valor))) = UPPER(LTRIM(RTRIM(@valor)))
-                    AND  (@assuntoId IS NULL OR a.assuntoId <> @assuntoId);                
+                    AND  (@assuntoid IS NULL OR a.assuntoid <> @assuntoid);                
                 ";
             }
         }

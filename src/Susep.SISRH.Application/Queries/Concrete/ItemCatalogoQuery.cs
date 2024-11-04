@@ -17,6 +17,7 @@ using Susep.SISRH.Application.Queries.Abstractions;
 using Susep.SISRH.Application.ViewModels;
 using Susep.SISRH.Application.Requests;
 using Susep.SISRH.Application.Queries.RawSql;
+using Npgsql;
 
 namespace Susep.SISRH.Application.Queries.Concrete
 {
@@ -36,7 +37,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@itemCatalogoid", itemCatalogoid, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -67,7 +68,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -89,7 +90,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
         {
             var result = new ApplicationResult<IEnumerable<ItemCatalogoViewModel>>();
           
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 

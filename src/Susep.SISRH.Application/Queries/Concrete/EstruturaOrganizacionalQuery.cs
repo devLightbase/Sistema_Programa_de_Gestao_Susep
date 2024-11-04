@@ -258,6 +258,66 @@ namespace Susep.SISRH.Application.Queries.Concrete
             return result;
         }
 
+        public async Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterPessoasComboAsync(UsuarioLogadoRequest request)
+        {
+            var result = new ApplicationResult<IEnumerable<DadosComboViewModel>>();
+
+            //Obtém as pessoas
+            var dados = await PessoaQuery.ObterComPactoTrabalhoAsync();
+
+            var itens = await RestringirPessoasPerfilUsuario(request, dados.Result);
+
+            //Converte de para DadosComboViewModel
+            result.Result = itens.Select(u => new DadosComboViewModel() { Id = u.PessoaId.ToString(), Descricao = u.Nome });
+
+            return result;
+        }
+        public async Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterPessoasComboUnidadesAsync()
+        {
+            var result = new ApplicationResult<IEnumerable<DadosComboViewModel>>();
+
+            //Obtém as pessoas
+            var dados = await PessoaQuery.ObterComboCompleto();
+
+            //var itens = await RestringirPessoasPerfilUsuario(request, dados.Result);
+
+            //Converte de para DadosComboViewModel
+            result.Result = dados.Result.Select(u => new DadosComboViewModel() { Id = u.PessoaId.ToString(), Descricao = u.Nome });
+
+            return result;
+        }
+
+        public async Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterUfComboAsync()
+        {
+            //Obtém as funções
+            var dados = await PessoaQuery.ObterComboUf();
+
+            return dados;
+        }
+
+        public async Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterComboFuncoesAsync()
+        {
+            //Obtém as funções
+            var dados = await PessoaQuery.ObterComboFuncoes();
+
+            return dados;
+        }
+
+        public async Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterComboVinculosAsync()
+        {
+            //Obtém as funções
+            var dados = await PessoaQuery.ObterComboVinculos();
+
+            return dados;
+        }
+        public async Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterComboSituacoesAsync()
+        {
+            //Obtém as funções
+            var dados = await PessoaQuery.ObterComboSituacoes();
+
+            return dados;
+        }
+
         private async Task<IEnumerable<PessoaViewModel>> RestringirPessoasPerfilUsuario(UsuarioLogadoRequest request, IEnumerable<PessoaViewModel> items)
         {
             var perfisUsuario = await ObterPerfilPessoaAsync(request);

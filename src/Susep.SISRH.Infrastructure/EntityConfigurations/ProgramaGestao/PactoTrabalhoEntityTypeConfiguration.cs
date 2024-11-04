@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PactoTrabalho> builder)
         {
-            builder.ToTable("PactoTrabalho", "ProgramaGestao");
+            builder.ToTable("pactotrabalho", "programagestao");
 
             builder.HasKey(p => p.PactoTrabalhoId);
 
@@ -19,29 +19,29 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
 
             builder.Ignore(p => p.DiasNaoUteis);
 
-            builder.Property(p => p.PactoTrabalhoId).HasColumnName("pactoTrabalhoId");
-            builder.Property(p => p.PlanoTrabalhoId).HasColumnName("planoTrabalhoId");
-            builder.Property(p => p.UnidadeId).HasColumnName("unidadeId");
-            builder.Property(p => p.PessoaId).HasColumnName("pessoaId");
-            builder.Property(p => p.DataInicio).HasColumnName("dataInicio");
-            builder.Property(p => p.DataFim).HasColumnName("dataFim");
-            builder.Property(p => p.ModalidadeExecucaoId).HasColumnName("formaExecucaoId");
-            builder.Property(p => p.SituacaoId).HasColumnName("situacaoId");
-            builder.Property(p => p.TermoAceite).HasColumnName("termoAceite");
-            builder.Property(p => p.CargaHorariaDiaria).HasColumnName("cargaHorariaDiaria");
-            builder.Property(p => p.PercentualExecucao).HasColumnName("percentualExecucao");
-            builder.Property(p => p.RelacaoPrevistoRealizado).HasColumnName("relacaoPrevistoRealizado");
-            builder.Property(p => p.TempoTotalDisponivel).HasColumnName("tempoTotalDisponivel");            
+            builder.Property(p => p.PactoTrabalhoId).HasColumnName("pactotrabalhoid");
+            builder.Property(p => p.PlanoTrabalhoId).HasColumnName("planotrabalhoid");
+            builder.Property(p => p.UnidadeId).HasColumnName("unidadeid");
+            builder.Property(p => p.PessoaId).HasColumnName("pessoaid");
+            builder.Property(p => p.DataInicio).HasColumnName("datainicio");
+            builder.Property(p => p.DataFim).HasColumnName("datafim");
+            builder.Property(p => p.ModalidadeExecucaoId).HasColumnName("formaexecucaoid");
+            builder.Property(p => p.SituacaoId).HasColumnName("situacaoid");
+            builder.Property(p => p.TermoAceite).HasColumnName("termoaceite");
+            builder.Property(p => p.CargaHorariaDiaria).HasColumnName("cargahorariadiaria");
+            builder.Property(p => p.PercentualExecucao).HasColumnName("percentualexecucao");
+            builder.Property(p => p.RelacaoPrevistoRealizado).HasColumnName("relacaoprevistorealizado");
+            builder.Property(p => p.TempoTotalDisponivel).HasColumnName("tempototaldisponivel");            
 
             builder.HasOne(p => p.Unidade)
                    .WithMany(p => p.PactosTrabalho)
                    .HasForeignKey(p => p.UnidadeId)
-                   .HasConstraintName("FK_PactoTrabalho_Unidade");
+                   .HasConstraintName("fk_pactotrabalho_unidade");
 
             builder.HasOne(p => p.Pessoa)
                    .WithMany(p => p.PactosTrabalho)
                    .HasForeignKey(p => p.PessoaId)
-                   .HasConstraintName("FK_PactoTrabalho_Pessoa");
+                   .HasConstraintName("fk_pactotrabalho_pessoa");
 
         }
 

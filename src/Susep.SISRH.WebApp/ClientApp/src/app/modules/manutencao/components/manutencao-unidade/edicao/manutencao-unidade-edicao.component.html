@@ -1,0 +1,155 @@
+<section>
+    <div class="container">
+        <header class="content-header pb-5 pb-sm-8 pt-3">
+            <h1 class="content-title">Unidade</h1>
+            <p>Preencha os campos abaixo para cadastrar uma nova unidade ou altere os dados para editar uma unidade
+                existente</p>
+        </header>
+        <form [formGroup]="form">
+            <div class="br-form">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório."
+                                label="Nome*">
+                                <input id="nome" type="text" placeholder="Insira o nome da unidade"
+                                    formControlName="nome">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório."
+                                label="Sigla*">
+                                <input id="sigla" type="text" placeholder="Insira a sigla da unidade"
+                                    formControlName="sigla">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="UF*">
+                                <select id="ufId" name="ufId"
+                                    formControlName="ufId">
+                                    <option value="">Selecione a UF</option>
+                                    <option *ngFor="let estado of uf" [value]="estado.id">{{ estado.id }}</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Unidade pai">
+                                <select id="unidadeIdPai" name="unidadeIdPai" formControlName="unidadeIdPai">
+                                    <option value="null">Selecione uma unidade pai</option>
+                                    <option *ngFor="let unidade of unidades" [value]="unidade.id">{{ unidade.descricao
+                                        }}</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Situação">
+                                <select id="situacaoUnidadeId" name="situacaoUnidadeId"
+                                    formControlName="situacaoUnidadeId">
+                                    <option value="1">Ativo</option>
+                                    <option value="0">Inativo</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" errorMessage="Campo obrigatório."
+                                label="Nível*">
+                                <input id="nivel" type="text" formControlName="nivel">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" label="Cod. SIOGR">
+                                <input id="codSiorg" type="text" formControlName="codSiorg">
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" label="Cod. SGC">
+                                <input id="codSgc" type="text" formControlName="codSgc">
+                            </field-validation>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="field">
+                            <field-validation [classList]="['br-input', 'is-medium']" label="E-mail">
+                                <input id="email" type="text" placeholder="Insira o e-mail da unidade"
+                                    formControlName="email">
+                            </field-validation>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Chefe">
+                                <select id="pessoaIdChefe" name="pessoaIdChefe" formControlName="pessoaIdChefe">
+                                    <option value="null" selected>Selecione o chefe da unidade</option>
+                                    <option class="select-items" *ngFor="let item of pessoas" [value]="item.id">{{
+                                        item.descricao }}</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Substituto">
+                                <select id="pessoaIdChefeSubstituto" name="pessoaIdChefeSubstituto"
+                                    formControlName="pessoaIdChefeSubstituto">
+                                    <option value="null">Selecione o chefe substitudo da unidade</option>
+                                    <option class="select-items" *ngFor="let item of pessoas" [value]="item.id">{{
+                                        item.descricao }}</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Tipo Unidade">
+                                <select id="tipoUnidadeId" name="tipoUnidadeId" formControlName="tipoUnidadeId">
+                                    <option value="0" selected>Selecione o tipo da unidade</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="field">
+                            <field-validation [classList]="['br-select', 'is-medium']" label="Tipo Função Unidade">
+                                <select id="tipoFuncaoUnidadeId" name="tipoFuncaoUnidadeId" formControlName="tipoFuncaoUnidadeId">
+                                    <option value="15" selected>Selecione o tipo função da unidade</option>
+                                </select>
+                            </field-validation>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions justify-content-start">
+                    <secure-input [perfis]="[PerfilEnum.GestorIndicadores]">
+                        <button class="br-button is-primary" type="submit" (click)="salvar()"
+                            [disabled]="!form.valid">Salvar</button>
+                    </secure-input>
+                    <button class="br-button is-cancel mr-2" type="button"
+                        [routerLink]="['/manutencao-unidade']">Cancelar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

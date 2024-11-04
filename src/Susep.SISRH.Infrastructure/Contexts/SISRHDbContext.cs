@@ -5,7 +5,12 @@ using Susep.SISRH.Domain.AggregatesModel.PactoTrabalhoAggregate;
 using Susep.SISRH.Domain.AggregatesModel.PessoaAggregate;
 using Susep.SISRH.Domain.AggregatesModel.PlanoTrabalhoAggregate;
 using Susep.SISRH.Domain.AggregatesModel.UnidadeAggregate;
+using Susep.SISRH.Domain.AggregatesModel.UnidadesAggregate;
 using Susep.SISRH.Domain.AggregatesModel.AssuntoAggregate;
+using Susep.SISRH.Domain.AggregatesModel.SituacaoAggregate;
+using Susep.SISRH.Domain.AggregatesModel.TipoFuncaoAggregate;
+using Susep.SISRH.Domain.AggregatesModel.TipoVinculoAggregate;
+using Susep.SISRH.Domain.AggregatesModel.FeriadoAggregate;
 using Susep.SISRH.Infrastructure.EntityConfigurations;
 using Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao;
 using Susep.SISRH.Domain.AggregatesModel.ObjetoAggregate;
@@ -41,8 +46,15 @@ namespace Susep.SISRH.Infrastructure.Contexts
         public DbSet<PlanoTrabalhoObjeto> PlanoTrabalhoObjeto { get; set; }
         public DbSet<PlanoTrabalhoObjetoAssunto> PlanoTrabalhoObjetoAssunto { get; set; }
 
+        public DbSet<Situacao> Situacao { get; set; }
+        public DbSet<TipoFuncao> TipoFuncao { get; set; }
+        public DbSet<TipoVinculo> TipoVinculo { get; set; }
+        public DbSet<Feriado> Feriado { get; set; }
+
+
         public DbSet<Pessoa> Pessoa { get; set; }
         public DbSet<Unidade> Unidade { get; set; }
+        public DbSet<UnidadeDB> UnidadeDB { get; set; }
 
         public DbSet<PessoaModalidadeExecucao> PessoaModalidadeExecucao { get; set; }
         public DbSet<UnidadeModalidadeExecucao> UnidadeModalidadeExecucao { get; set; }
@@ -60,7 +72,11 @@ namespace Susep.SISRH.Infrastructure.Contexts
             //Schema dbo
             modelBuilder.HasDefaultSchema("dbo");
             modelBuilder.ApplyConfiguration(new PessoaEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SituacaoEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TipoFuncaoEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new TipoVinculoEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new UnidadeEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new UnidadeDBEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FeriadoEntityTypeConfiguration());            
 
             //Schema ProgramaGestao

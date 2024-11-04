@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 using Susep.SISRH.Application.Queries.Abstractions;
 using Susep.SISRH.Application.Queries.RawSql;
 using Susep.SISRH.Application.Requests;
@@ -33,7 +34,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@situacaoAtiva", (int)SituacaoUnidadeEnum.Ativa, DbType.Int64, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -59,11 +60,75 @@ namespace Susep.SISRH.Application.Queries.Concrete
             return result;
         }
 
+        public async Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterUnidadesCombo()
+        {
+            var result = new ApplicationResult<IEnumerable<DadosComboViewModel>>();
+
+            //Obtém as unidades
+            var dados = await ObterAtivasAsync();
+
+            //Converte de UnidadeViewModel para DadosComboViewModel
+            result.Result = dados.Result.Select(u => new DadosComboViewModel() { Id = u.UnidadeId.ToString(), Descricao = u.Sigla });
+
+            return result;
+        }
+
+        //public async Task<IApplicationResult<IEnumerable<UnidadeViewModel>>> ObterAtivasTotal()
+        //{
+        //    var result = new ApplicationResult<IEnumerable<UnidadeViewModel>>();
+
+        //    DynamicParameters parameters = new DynamicParameters();
+        //    parameters.Add("@situacaoAtiva", (int)SituacaoUnidadeEnum.Ativa, DbType.Int64, ParameterDirection.Input);
+
+        //    using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+        //    {
+        //        connection.Open();
+
+        //        var dados = await connection.QueryAsync<UnidadeViewModel>(UnidadeRawSqls.ObterUnidadesAtivas, parameters);
+        //        result.Result = dados;
+
+        //        connection.Close();
+        //    }
+
+        //    return result;
+        //}
+
+        public async Task<IApplicationResult<DadosPaginadosViewModel<UnidadeViewModel>>> ObterAtivasTotal(UnidadeFiltroRequest request)
+        {
+            var result = new ApplicationResult<DadosPaginadosViewModel<UnidadeViewModel>>();
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@sigla", request.Sigla, DbType.String, ParameterDirection.Input);
+            parameters.Add("@nome", request.Nome, DbType.String, ParameterDirection.Input);
+
+            parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
+
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var dadosPaginados = new DadosPaginadosViewModel<UnidadeViewModel>(request);
+
+
+                using (var multi = await connection.QueryMultipleAsync(UnidadeRawSqls.ObterPorFiltro, parameters))
+                {
+                    dadosPaginados.Registros = multi.Read<UnidadeViewModel>().ToList();
+                    dadosPaginados.Controle.TotalRegistros = multi.ReadFirst<int>();
+                    result.Result = dadosPaginados;
+                }
+
+                connection.Close();
+            }
+
+            return result;
+        }
+
         public async Task<IApplicationResult<IEnumerable<UnidadeViewModel>>> ObterComPlanoTrabalhoAsync()
         {
             var result = new ApplicationResult<IEnumerable<UnidadeViewModel>>();
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -80,7 +145,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
         {
             var result = new ApplicationResult<IEnumerable<DadosComboViewModel>>();
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -98,11 +163,32 @@ namespace Susep.SISRH.Application.Queries.Concrete
         {
             var result = new ApplicationResult<IEnumerable<UnidadeViewModel>>();
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
                 var dados = await connection.QueryAsync<UnidadeViewModel>(UnidadeRawSqls.ObterComCatalogoCadastrado);
+                result.Result = dados;
+
+                connection.Close();
+            }
+
+            return result;
+        }
+
+
+        public async Task<IApplicationResult<UnidadeViewModel>> ObterUnidadePorChaveAsync(Int64 unidadeId)
+        {
+            var result = new ApplicationResult<UnidadeViewModel>();
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@unidadeId", unidadeId, DbType.Int64, ParameterDirection.Input);
+
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var dados = await connection.QueryFirstOrDefaultAsync<UnidadeViewModel>(UnidadeRawSqls.ObterUnidadePorChave, parameters);
                 result.Result = dados;
 
                 connection.Close();
@@ -118,7 +204,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@unidadeId", unidadeId, DbType.Int64, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -138,12 +224,13 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@unidadeId", unidadeId, DbType.Int64, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
                 var dados = await connection.QueryFirstOrDefaultAsync<UnidadeViewModel>(UnidadeRawSqls.ObterQuantidadeServidoresPorChave, parameters);
-                result.Result = dados;
+                if (dados != null)
+                    result.Result = dados;
 
                 connection.Close();
             }
@@ -160,7 +247,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             parameters.Add("@dataInicio", dataInicio, DbType.Date, ParameterDirection.Input);
             parameters.Add("@dataFim", dataFim, DbType.Date, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -180,7 +267,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@unidadeId", unidadeId, DbType.Int64, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -200,7 +287,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@unidadeId", unidadeId, DbType.Int64, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -220,7 +307,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@unidadeId", unidadeId, DbType.Int64, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -245,7 +332,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
                 siglas.Add(parteAnterior);
             }
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -265,7 +352,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@unidadeId", unidadeId, DbType.Int64, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -278,8 +365,31 @@ namespace Susep.SISRH.Application.Queries.Concrete
             return result;
         }
 
+        public async Task<IApplicationResult<bool>> ValorDuplicadoAsync(string sigla, string descricao, Int64 unidadeId)
+        {
+            var result = new ApplicationResult<bool>(null);
 
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@sigla", sigla, DbType.String, ParameterDirection.Input);
+            parameters.Add("@descricao", descricao, DbType.String, ParameterDirection.Input);
+            parameters.Add("@unidadeid", unidadeId, DbType.Int64, ParameterDirection.Input);
 
-        
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var dados = await connection.QueryAsync<int>(UnidadeRawSqls.ValorDuplicadoAsync, parameters);
+                result.Result = dados.FirstOrDefault() > 0;
+
+                connection.Close();
+            }
+
+            return result;
+        }
+
+        public Task<IApplicationResult<DadosPaginadosViewModel<UnidadeViewModel>>> ObterAtivasTotal()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

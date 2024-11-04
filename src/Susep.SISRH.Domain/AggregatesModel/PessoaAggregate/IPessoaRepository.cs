@@ -7,7 +7,9 @@ namespace Susep.SISRH.Domain.AggregatesModel.PessoaAggregate
     public interface IPessoaRepository
     {
         Task<Pessoa> ObterAsync(Int64 pessoaId);
-
+        Task<Pessoa> ObterPessoaDBAsync(Int64 pessoaId);
         Task<Pessoa> ObterPorCriteriosAsync(String email, String cpf);
+        Task<Pessoa> AdicionarAsync(Pessoa item);
+        void Atualizar(Pessoa item);
     }
 }

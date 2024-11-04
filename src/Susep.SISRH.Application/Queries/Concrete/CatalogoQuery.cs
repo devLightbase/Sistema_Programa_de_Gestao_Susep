@@ -17,12 +17,20 @@ using Susep.SISRH.Application.Queries.Abstractions;
 using Susep.SISRH.Application.ViewModels;
 using Susep.SISRH.Application.Requests;
 using Susep.SISRH.Application.Queries.RawSql;
+using Microsoft.Data.SqlClient;
+using Npgsql;
 
 namespace Susep.SISRH.Application.Queries.Concrete
 {
     public class CatalogoQuery : ICatalogoQuery
     {
         private readonly IConfiguration Configuration;
+
+        public class Contagem
+        {
+            public long unidades_lista;
+            public long pactos_vigentes;
+        }
 
         public CatalogoQuery(IConfiguration configuration)
         {
@@ -36,7 +44,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@catalogoid", catalogoid, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -68,7 +76,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -90,6 +98,161 @@ namespace Susep.SISRH.Application.Queries.Concrete
             return result;
         }
 
+        public async Task<IApplicationResult<DadosPaginadosViewModel<CatalogoDominioViewModel>>> ObterCatalogoDominioPorFiltroAsync(CatalogoDominioFiltroRequest request)
+        {
+            var result = new ApplicationResult<DadosPaginadosViewModel<CatalogoDominioViewModel>>();
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@classificacao", request.Classificacao, DbType.String, ParameterDirection.Input);
+            parameters.Add("@descricao", request.Descricao, DbType.String, ParameterDirection.Input);
+
+            parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
+
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var dadosPaginados = new DadosPaginadosViewModel<CatalogoDominioViewModel>(request);
+
+
+                using (var multi = await connection.QueryMultipleAsync(CatalogoRawSqls.ObterCatalogoDominioPorFiltro, parameters))
+                {
+                    dadosPaginados.Registros = multi.Read<CatalogoDominioViewModel>().ToList();
+                    dadosPaginados.Controle.TotalRegistros = multi.ReadFirst<int>();
+                    result.Result = dadosPaginados;
+                }
+
+                connection.Close();
+            }
+
+            return result;
+        }
+
+        public async Task<IApplicationResult<DadosPaginadosViewModel<PgViewModel>>> ObterPgUnidadeAsync(PgUnidadeFiltroRequest request)
+        {
+            var result = new ApplicationResult<DadosPaginadosViewModel<PgViewModel>>();
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@sigla", request.Sigla, DbType.String, ParameterDirection.Input);
+            parameters.Add("@descricao", request.Descricao, DbType.String, ParameterDirection.Input);
+
+            parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
+
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var dadosPaginados = new DadosPaginadosViewModel<PgViewModel>(request);
+
+                using (var multi = await connection.QueryMultipleAsync(CatalogoRawSqls.ObterPgUnidade, parameters))
+                {
+                    dadosPaginados.Registros = multi.Read<PgViewModel>().ToList();
+                    dadosPaginados.Controle.TotalRegistros = multi.ReadFirst<int>();
+                    result.Result = dadosPaginados;
+                }
+
+                connection.Close();
+            }
+
+            return result;
+        }
+
+        public async Task<IApplicationResult<DadosPaginadosViewModel<ProgramaGestaoModalViewModel>>> ObterProgramaGestaoModal(ProgramaGestaoModalFiltroRequest request)
+        {
+            var result = new ApplicationResult<DadosPaginadosViewModel<ProgramaGestaoModalViewModel>>();
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@sigla", request.Sigla, DbType.String, ParameterDirection.Input);
+
+            parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
+
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var dadosPaginados = new DadosPaginadosViewModel<ProgramaGestaoModalViewModel>(request);
+
+                using (var multi = await connection.QueryMultipleAsync(CatalogoRawSqls.ObterProgramaGestaoModal, parameters))
+                {
+                    dadosPaginados.Registros = multi.Read<ProgramaGestaoModalViewModel>().ToList();
+                    dadosPaginados.Controle.TotalRegistros = multi.ReadFirst<int>();
+                    result.Result = dadosPaginados;
+                }
+
+                connection.Close();
+            }
+
+            return result;
+        }
+
+        public async Task<IApplicationResult<DadosPaginadosViewModel<PactosVigentesModalViewModel>>> ObterPactosVigentesModal(PactosVigentesModalFiltroRequest request)
+        {
+            var result = new ApplicationResult<DadosPaginadosViewModel<PactosVigentesModalViewModel>>();
+
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@sigla", request.Sigla, DbType.String, ParameterDirection.Input);
+
+            parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
+            parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
+
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var dadosPaginados = new DadosPaginadosViewModel<PactosVigentesModalViewModel>(request);
+
+                using (var multi = await connection.QueryMultipleAsync(CatalogoRawSqls.ObterPactosVigentesModal, parameters))
+                {
+                    dadosPaginados.Registros = multi.Read<PactosVigentesModalViewModel>().ToList();
+                    dadosPaginados.Controle.TotalRegistros = multi.ReadFirst<int>();
+                    result.Result = dadosPaginados;
+                }
+
+                connection.Close();
+            }
+
+            return result;
+        }
+
+        public async Task<IApplicationResult<ContagemViewModel>> ObterContagem()
+        {
+            var result = new ApplicationResult<ContagemViewModel>(null);
+
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            {
+                connection.Open();
+
+                var contagem = new ContagemViewModel();
+
+                using (var dados = await connection.QueryMultipleAsync(CatalogoRawSqls.ObterContagemUnidades))
+                {
+                    var contagemUnidades = dados.Read<long>().ToList();
+                    contagem.unidades = contagemUnidades[0];
+                }
+                using (var dados = await connection.QueryMultipleAsync(CatalogoRawSqls.ObterContagemPessoas))
+                {
+                    var contagemPessoas = dados.Read<long>().ToList();
+                    contagem.pessoas = contagemPessoas[0];
+                }
+                using (var dados = await connection.QueryMultipleAsync(CatalogoRawSqls.ObterContagem))
+                {
+                    var contagens = dados.Read<Contagem>().ToList();
+                    var count = contagens.First();
+                    contagem.unidades_lista = count.unidades_lista;
+                    contagem.pactos_vigentes = count.pactos_vigentes;
+                }
+
+                result.Result = contagem;
+
+                connection.Close();
+            }
+
+            return result;
+        }
+
         public async Task<IApplicationResult<CatalogoViewModel>> ObterPorUnidadeAsync(Int32 unidadeId)
         {
             var result = new ApplicationResult<CatalogoViewModel>();
@@ -97,7 +260,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@unidadeId", unidadeId, DbType.Int32, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -124,7 +287,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@unidadeId", unidadeId, DbType.Int32, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 

@@ -73,13 +73,29 @@ export class NavMenuComponent implements OnInit {
             items.push({
               text: 'Administração',
               subItems: [
+                { text: 'Unidades', url: 'manutencao-unidade' },
+                { text: 'Pessoas', url: 'manutencao-pessoa' },
                 { text: 'Assuntos', url: '/assunto' },
-                { text: 'Objetos', url: '/objeto' },
+                { text: 'Objetos', url: '/objeto' },                
                 {
                   text: 'Atividades',
                   subItems: [
                     { text: 'Todas as atividades', url: '/programagestao/catalogo/item' },
                     { text: 'Listas de atividades das unidades', url: '/programagestao/catalogo' },
+                  ]
+                },{
+                  text: 'Dados Auxiliares',
+                  subItems: [
+                    { text: 'Situações Pessoas', url: 'situacao-pessoa' },
+                    { text: 'Tipos de Função', url: '/tipo-funcao' },
+                    { text: 'Tipos de Vinculo', url: '/tipo-vinculo' },
+                    { text: 'Feriados', url: '/feriados' },
+                  ]
+                },{
+                  text: 'Consultas',
+                  subItems: [
+                    { text: 'Catálogo Domínio', url: 'catalogo-dominio' },
+                    { text: 'Qtd. Pessoas em PG por Unidade', url: '/pg-unidade' },
                   ]
                 }
               ]
@@ -131,6 +147,17 @@ export class NavMenuComponent implements OnInit {
               { text: 'Histórico de planos de trabalho', url: '/programagestao/atividade/historico' },
             ]
           }]);
+
+        // items = items.concat([
+        //   {
+        //     text: 'Consultas e Manutenções',
+        //     subItems: [
+        //       { text: 'Unidades', url: 'manutencao-unidade' },
+        //       { text: 'Pessoas', url: 'manutencao-pessoa' },
+        //       { text: 'Dados Auxiliares', url: '/programagestao/atividade' },
+        //       { text: 'Consultas', url: '/programagestao/atividade/historico' },
+        //     ]
+        //   }]);
 
         //items.push({text: 'Agendamento presencial', url: '/agendamento' });
       }

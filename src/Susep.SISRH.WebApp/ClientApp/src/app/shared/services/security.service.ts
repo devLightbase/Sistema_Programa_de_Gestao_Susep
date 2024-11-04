@@ -126,7 +126,8 @@ export class SecurityService implements OnInit {
 
     const options = { headers };
 
-    this.applicationState.changeLoadingStatus(true); 
+    this.applicationState.changeLoadingStatus(true);
+    console.log(identityUrl);
     return this.http
       .post<IConnectTokenResponse>(identityUrl + 'connect/token', params, options)
       .pipe(
@@ -136,9 +137,9 @@ export class SecurityService implements OnInit {
           return res;
         }),
         catchError((err: any) => {
-          this.applicationState.changeLoadingStatus(false); 
+          this.applicationState.changeLoadingStatus(false);
           if (err.status === 400) {
-            return of({ 'token_type': err.error.error_description})
+            return of({ 'token_type': err.error.error_description })
           }
           return of(err);
         })
@@ -217,14 +218,14 @@ export class SecurityService implements OnInit {
     //if (domainUrl.includes('#'))
     //  domainUrl = domainUrl.substr(0, domainUrl.indexOf('#'));
     //domainUrl = domainUrl.endsWith('/') ? domainUrl : `${domainUrl}/`;
-    
+
     let params = new HttpParams({ encoder: new CustomHttpParamEncoder() });
     params = params.set('id_token_hint', this.storage.retrieve('userAuthorizationIdToken'));
     //params = params.set('post_logout_redirect_uri', domainUrl);
 
     //Remove os dados de autenticação
     this.resetUserAuthorizationData();
-    
+
     //Redireciona o usuário para a URL de logoff
     this.dataService.get(this.configurationService.getIdentityUrl() + 'connect/endsession?' + params.toString(), true).subscribe(res => { });
 

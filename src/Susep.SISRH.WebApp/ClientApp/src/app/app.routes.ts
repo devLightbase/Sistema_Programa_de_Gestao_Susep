@@ -33,6 +33,22 @@ import { ModoExibicaoGuard } from "./shared/helpers/modo-exibicao.guard.helper";
 import { ObjetoPesquisaComponent } from "./modules/objeto/components/objeto-pesquisa.component";
 import { ObjetoEdicaoComponent } from "./modules/objeto/components/edicao/objeto-edicao.component";
 import { AgendamentoPresencialComponent } from "./modules/programa-gestao/components/agendamento-presencial/agendamento-presencial.component";
+import { ManutencaoUnidadeComponent } from "./modules/manutencao/components/manutencao-unidade/manutencao-unidade.component";
+import { ManutencaoUnidadeEdicaoComponent } from "./modules/manutencao/components/manutencao-unidade/edicao/manutencao-unidade-edicao.component";
+import { ManutencaoUnidadesDetalhesComponent } from "./modules/manutencao/components/manutencao-unidade/detalhar/manutencao-unidades-detalhes.component";
+import { ManutencaoPessoaPesquisaComponent } from "./modules/manutencao/components/manutencao-pessoa/manutencao-pessoa-pesquisa/manutencao-pessoa-pesquisa.component";
+import { ManutencaoPessoaEdicaoComponent } from "./modules/manutencao/components/manutencao-pessoa/manutencao-pessoa-edicao/manutencao-pessoa-edicao.component";
+import { ManutencaoPessoaDetalhesComponent } from "./modules/manutencao/components/manutencao-pessoa/manutencao-pessoa-detalhes/manutencao-pessoa-detalhes.component";
+import { SituacaoPessoaComponent } from "./modules/dados-auxiliares/situacao-pessoa/situacao-pessoa.component";
+import { SituacaoPessoaEdicaoComponent } from "./modules/dados-auxiliares/situacao-pessoa/edicao/situacao-pessoa-edicao.component";
+import { TipoFuncaoComponent } from "./modules/dados-auxiliares/tipo-funcao/tipo-funcao.component";
+import { TipoFuncaoEdicaoComponent } from "./modules/dados-auxiliares/tipo-funcao/edicao/tipo-funcao-edicao.component";
+import { TipoVinculoComponent } from "./modules/dados-auxiliares/tipo-vinculo/tipo-vinculo.component";
+import { TipoVinculoEdicaoComponent } from "./modules/dados-auxiliares/tipo-vinculo/edicao/tipo-vinculo-edicao.component";
+import { FeriadosComponent } from "./modules/dados-auxiliares/feriados/feriados.component";
+import { FeriadosEdicaoComponent } from "./modules/dados-auxiliares/feriados/edicao/feriados-edicao.component";
+import { CatalogoDominioComponent } from "./modules/consultas/catalogo-dominio/catalogo-dominio.component";
+import { PgUnidadeComponent } from "./modules/consultas/pg-unidade/pg-unidade.component";
 
 
 const routes: Routes = [
@@ -87,16 +103,32 @@ const routes: Routes = [
     path: 'pessoa', canActivate: [AuthGuard], data: { breadcrumb: 'Pessoas' }, children: [      
       { path: '', component: PessoaPesquisaComponent, data: { breadcrumb: 'Pesquisa' } },
       { path: 'pesquisa', component: PessoaPesquisaComponent, data: { breadcrumb: 'Pesquisa' } },
-      //{ path: 'editar/:id', component: PessoaEdicaoComponent, data: { breadcrumb: 'Editar' } },
+      { path: 'editar/:id', component: PessoaEdicaoComponent, data: { breadcrumb: 'Editar' } },
     ]
   },
   {
-    path: 'unidade', canActivate: [AuthGuard], data: { breadcrumb: 'Unidades' }, children: [      
-      { path: '', component: UnidadePesquisaComponent, data: { breadcrumb: 'Pesquisa' } },
-      { path: 'pesquisa', component: UnidadePesquisaComponent, data: { breadcrumb: 'Pesquisa' } },
-      //{ path: 'editar/:id', component: UnidadeEdicaoComponent, data: { breadcrumb: 'Editar' } },
+    path: 'manutencao-unidade', canActivate: [AuthGuard], data: { breadcrumb: 'Unidades' }, children: [      
+      { path: '', component: ManutencaoUnidadeComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'cadastro', component: ManutencaoUnidadeEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
+      { path: 'editar/:id', component: ManutencaoUnidadeEdicaoComponent, data: { breadcrumb: 'Editar' } },
+      { path: 'detalhes/:id', component: ManutencaoUnidadesDetalhesComponent, data: { breadcrumb: 'Detalhes' } },
     ]
   },
+  {
+    path: 'manutencao-pessoa', canActivate: [AuthGuard], data: { breadcrumb: 'Pessoas' }, children: [      
+      { path: '', component: ManutencaoPessoaPesquisaComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'cadastro', component: ManutencaoPessoaEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
+      { path: 'editar/:id', component: ManutencaoPessoaEdicaoComponent, data: { breadcrumb: 'Editar' } },
+      { path: 'detalhes/:id', component: ManutencaoPessoaDetalhesComponent, data: { breadcrumb: 'Detalhes' } }
+    ]
+  },
+  // {
+  //   path: 'unidade', canActivate: [AuthGuard], data: { breadcrumb: 'Unidades' }, children: [      
+  //     { path: '', component: UnidadePesquisaComponent, data: { breadcrumb: 'Pesquisa' } },
+  //     { path: 'pesquisa', component: UnidadePesquisaComponent, data: { breadcrumb: 'Pesquisa' } },
+  //     //{ path: 'editar/:id', component: UnidadeEdicaoComponent, data: { breadcrumb: 'Editar' } },
+  //   ]
+  // },
   {
     path: 'assunto', canActivate: [AuthGuard, ModoExibicaoGuard], data: { breadcrumb: 'Assuntos', roles: [PerfilEnum.GestorPessoas] }, children: [      
       { path: '', component: AssuntoPesquisaComponent, data: { breadcrumb: 'Assunto' } },
@@ -111,6 +143,54 @@ const routes: Routes = [
       { path: 'pesquisa', component: ObjetoPesquisaComponent, data: { breadcrumb: 'Pesquisa' } },
       { path: 'cadastro', component: ObjetoEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
       { path: 'editar/:id', component: ObjetoEdicaoComponent, data: { breadcrumb: 'Editar' } },
+    ]
+  },
+  {
+    path: 'situacao-pessoa', canActivate: [AuthGuard], data: { breadcrumb: 'Situações' }, children: [      
+      { path: '', component: SituacaoPessoaComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'pesquisa', component: SituacaoPessoaComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'cadastro', component: SituacaoPessoaEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
+      { path: 'editar/:id', component: SituacaoPessoaEdicaoComponent, data: { breadcrumb: 'Editar' } },
+    ]
+  },
+  {
+    path: 'tipo-funcao', canActivate: [AuthGuard], data: { breadcrumb: 'Tipo Função' }, children: [      
+      { path: '', component: TipoFuncaoComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'pesquisa', component: TipoFuncaoComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'cadastro', component: TipoFuncaoEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
+      { path: 'editar/:id', component: TipoFuncaoEdicaoComponent, data: { breadcrumb: 'Editar' } },
+    ]
+  },
+  {
+    path: 'tipo-vinculo', canActivate: [AuthGuard], data: { breadcrumb: 'Tipo Vinculo' }, children: [      
+      { path: '', component: TipoVinculoComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'pesquisa', component: TipoVinculoComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'cadastro', component: TipoVinculoEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
+      { path: 'editar/:id', component: TipoVinculoEdicaoComponent, data: { breadcrumb: 'Editar' } },
+    ]
+  },
+  {
+    path: 'feriados', canActivate: [AuthGuard], data: { breadcrumb: 'Feriados' }, children: [      
+      { path: '', component: FeriadosComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'pesquisa', component: FeriadosComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'cadastro', component: FeriadosEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
+      { path: 'editar/:id', component: FeriadosEdicaoComponent, data: { breadcrumb: 'Editar' } },
+    ]
+  },
+  {
+    path: 'catalogo-dominio', canActivate: [AuthGuard], data: { breadcrumb: 'Catálogo Domínio' }, children: [      
+      { path: '', component: CatalogoDominioComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'pesquisa', component: CatalogoDominioComponent, data: { breadcrumb: 'Pesquisa' } },
+      // { path: 'cadastro', component: FeriadosEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
+      // { path: 'editar/:id', component: FeriadosEdicaoComponent, data: { breadcrumb: 'Editar' } },
+    ]
+  },
+  {
+    path: 'pg-unidade', canActivate: [AuthGuard], data: { breadcrumb: 'Pessoas no PG por Unidade' }, children: [      
+      { path: '', component: PgUnidadeComponent, data: { breadcrumb: 'Pesquisa' } },
+      { path: 'pesquisa', component: PgUnidadeComponent, data: { breadcrumb: 'Pesquisa' } },
+      // { path: 'cadastro', component: FeriadosEdicaoComponent, data: { breadcrumb: 'Cadastro' } },
+      // { path: 'editar/:id', component: FeriadosEdicaoComponent, data: { breadcrumb: 'Editar' } },
     ]
   },
   { path: 'agendamento', canActivate: [AuthGuard], component: AgendamentoPresencialComponent, data: { breadcrumb: 'Agendamento presencial' }, pathMatch: 'full' },  

@@ -60,7 +60,7 @@ namespace Susep.SISRH.Application.Commands.PlanoTrabalho
                         request.DataFim,
                         tempoComparecimento,
                         request.TempoFaseHabilitacao,
-                        unidade.Result.QuantidadeServidores,
+                        (unidade.Result != null?unidade.Result.QuantidadeServidores:0),
                         request.UsuarioLogadoId.ToString(),
                         termosAceite);
 

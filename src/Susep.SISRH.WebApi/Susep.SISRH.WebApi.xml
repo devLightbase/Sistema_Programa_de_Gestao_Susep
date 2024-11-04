@@ -76,6 +76,41 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.CatalogoController.GetAllCatalogoDominio(Susep.SISRH.Application.Requests.CatalogoDominioFiltroRequest)">
+            <summary>
+            Obtém os catálogo dominio
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.CatalogoController.GetAllPg(Susep.SISRH.Application.Requests.PgUnidadeFiltroRequest)">
+            <summary>
+            Obtém as pg por unidade
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.CatalogoController.GetAllProgramaGestao(Susep.SISRH.Application.Requests.ProgramaGestaoModalFiltroRequest)">
+            <summary>
+            Obtém as programa gestao
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.CatalogoController.GetAllPactosVigentes(Susep.SISRH.Application.Requests.PactosVigentesModalFiltroRequest)">
+            <summary>
+            Obtém os pactos vigentes
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.CatalogoController.GetContagem">
+            <summary>
+            Obtém contagens
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:Susep.SISRH.WebApi.Controllers.CatalogoController.GetByUnidadeId(System.Int32)">
             <summary>
             Obtém o catálogo de uma unidade
@@ -552,11 +587,12 @@
             Operações com os planos de trabalho
             </summary>
         </member>
-        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.#ctor(MediatR.IMediator,Susep.SISRH.Application.Queries.Abstractions.IPessoaQuery,Susep.SISRH.Application.Queries.Abstractions.IEstruturaOrganizacionalQuery)">
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.#ctor(MediatR.IMediator,MediatR.IMediator,Susep.SISRH.Application.Queries.Abstractions.IPessoaQuery,Susep.SISRH.Application.Queries.Abstractions.IEstruturaOrganizacionalQuery)">
             <summary>
             Contrutor da classe
             </summary>
             <param name="mediator"></param>
+            <param name="mediator2"></param>
             <param name="pessoaQuery"></param>    
             <param name="estruturaOrganizacionalQuery"></param>     
         </member>
@@ -581,7 +617,14 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetByPessoaId(System.Int32)">
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetByPessoaId(System.Int64)">
+            <summary>
+            Obtém uma pessoa por ID
+            </summary>
+            <param name="pessoaId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetPessoaDuplicada(System.String)">
             <summary>
             Obtém uma pessoa por ID
             </summary>
@@ -601,6 +644,202 @@
             Obtém as pessoas que possuem pelo menos um pacto de trabalho cadastrado para preenchimento de combos
             </summary>
             <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetComboUnidades(Susep.SISRH.Application.Requests.UsuarioLogadoRequest)">
+            <summary>
+            Obtém as pessoas que possuem pelo menos um pacto de trabalho cadastrado para preenchimento de combos
+            <param name="request"></param>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetComboPessoasUnidades(Susep.SISRH.Application.Requests.UsuarioLogadoRequest)">
+            <summary>
+            Obtém as pessoas que possuem pelo menos um pacto de trabalho cadastrado para preenchimento de combos
+            <param name="request"></param>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetComboUf(Susep.SISRH.Application.Requests.UsuarioLogadoRequest)">
+            <summary>
+            Obtém as uf para preenchimento de combos
+            <param name="request"></param>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetComboFuncoes(Susep.SISRH.Application.Requests.UsuarioLogadoRequest)">
+            <summary>
+            Obtém Funções para preenchimento de combos
+            <param name="request"></param>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetComboVinculos(Susep.SISRH.Application.Requests.UsuarioLogadoRequest)">
+            <summary>
+            Obtém Vínculos para preenchimento de combos
+            <param name="request"></param>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetComboSituacoes(Susep.SISRH.Application.Requests.UsuarioLogadoRequest)">
+            <summary>
+            Obtém Vínculos para preenchimento de combos
+            <param name="request"></param>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PostPessoa(Susep.SISRH.Application.Commands.Pessoa.CadastrarPessoaCommand)">
+            <summary>
+            Cadastra uma pessoa
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PutPessoa(Susep.SISRH.Application.Commands.Pessoa.AlterarPessoaCommand)">
+            <summary>
+            Altera uma pessoa
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetAllSituacoes(Susep.SISRH.Application.Requests.SituacoesFiltroRequest)">
+            <summary>
+            Obtém as situacoes cadastrados
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetSituacaoId(System.Int64)">
+            <summary>
+            Obtém a situacao por id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PostSituacao(Susep.SISRH.Application.Commands.Situacao.CadastrarSituacaoCommand)">
+            <summary>
+            Cadastra uma situação
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PutSituacao(Susep.SISRH.Application.Commands.Situacao.AlterarSituacaoCommand)">
+            <summary>
+            Altera uma situacao
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.DeleteSituacao(Susep.SISRH.Application.Commands.Situacao.ExcluirSituacaoCommand)">
+            <summary>
+            Exclui uma situacao
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetAllTipoFuncao(Susep.SISRH.Application.Requests.TipoFuncaoFiltroRequest)">
+            <summary>
+            Obtém os tipos de função cadastrados
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetTipoFuncaoId(System.Int64)">
+            <summary>
+            Obtém os tipos de função por id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PostTipoFuncao(Susep.SISRH.Application.Commands.TipoFuncao.CadastrarTipoFuncaoCommand)">
+            <summary>
+            Cadastra um tipo de função
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PutTipoFuncao(Susep.SISRH.Application.Commands.TipoFuncao.AlterarTipoFuncaoCommand)">
+            <summary>
+            Altera um tipo de função
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.DeleteTipoFuncao(Susep.SISRH.Application.Commands.TipoFuncao.ExcluirTipoFuncaoCommand)">
+            <summary>
+            Exclui um tipo de função
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetAllTipoVinculo(Susep.SISRH.Application.Requests.TipoVinculoFiltroRequest)">
+            <summary>
+            Obtém os tipos de vinculo cadastrados
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetTipoVinculoId(System.Int64)">
+            <summary>
+            Obtém os tipos de vinculo por id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PostTipoVinculo(Susep.SISRH.Application.Commands.TipoVinculo.CadastrarTipoVinculoCommand)">
+            <summary>
+            Cadastra um tipo de vinculo
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PutTipoVinculo(Susep.SISRH.Application.Commands.TipoVinculo.AlterarTipoVinculoCommand)">
+            <summary>
+            Altera um tipo de vinculo
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.DeleteTipoVinculo(Susep.SISRH.Application.Commands.TipoVinculo.ExcluirTipoVinculoCommand)">
+            <summary>
+            Exclui um tipo de função
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetAllFeriado(Susep.SISRH.Application.Requests.FeriadoFiltroRequest)">
+            <summary>
+            Obtém os feriados cadastrados
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.GetFeriadoId(System.Int64)">
+            <summary>
+            Obtém os feriados por id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PostFeriado(Susep.SISRH.Application.Commands.Feriado.CadastrarFeriadoCommand)">
+            <summary>
+            Cadastra um feriado
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.PutFeriado(Susep.SISRH.Application.Commands.Feriado.AlterarFeriadoCommand)">
+            <summary>
+            Altera um feriado
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.PessoaController.DeleteFeriado(Susep.SISRH.Application.Commands.Feriado.ExcluirFeriadoCommand)">
+            <summary>
+            Exclui um feriado
+            </summary>
+            <param name="command"></param>
             <returns></returns>
         </member>
         <member name="T:Susep.SISRH.WebApi.Controllers.PlanoTrabalhoController">
@@ -899,17 +1138,25 @@
             Operações com as unidades organizacionais
             </summary>
         </member>
-        <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.#ctor(Susep.SISRH.Application.Queries.Abstractions.IUnidadeQuery,Susep.SISRH.Application.Queries.Abstractions.IDominioQuery,Susep.SISRH.Application.Queries.Abstractions.IEstruturaOrganizacionalQuery)">
+        <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.#ctor(Susep.SISRH.Application.Queries.Abstractions.IUnidadeQuery,Susep.SISRH.Application.Queries.Abstractions.IDominioQuery,Susep.SISRH.Application.Queries.Abstractions.IEstruturaOrganizacionalQuery,MediatR.IMediator)">
             <summary>
             Contrutor da classe
             </summary>
             <param name="unidadeQuery"></param>
             <param name="dominioQuery"></param>
             <param name="estruturaOrganizacionalQuery"></param>     
+            <param name="mediator"></param>     
         </member>
         <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.GetTodasAtivasDadosCombo">
             <summary>
             Obtém todas as unidades ativas para preenchimento de combos
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.GetAll(Susep.SISRH.Application.Requests.UnidadeFiltroRequest)">
+            <summary>
+            Obtém todas as unidades ativas com todos os detalhes de cada unidade
             </summary>
             <param name="request"></param>
             <returns></returns>
@@ -919,6 +1166,12 @@
             Obtém as unidades ativas para preenchimento de combos
             </summary>
             <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.GetDadosCombo">
+            <summary>
+            Obtém as unidades ativas para preenchimento de combos
+            </summary>
             <returns></returns>
         </member>
         <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.GetComPlanoTrabalhoDadosCombo(Susep.SISRH.Application.Requests.UsuarioLogadoRequest)">
@@ -948,6 +1201,13 @@
             <param name="unidadeId"></param>
             <returns></returns>
         </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.GetUnidadeById(System.Int64)">
+            <summary>
+            Obtém os dados de uma unidade
+            </summary>
+            <param name="unidadeId"></param>
+            <returns></returns>
+        </member>
         <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.GetModalidadeExecucaoById(System.Int64)">
             <summary>
             Obtém as modalidades de execução de uma unidade
@@ -960,6 +1220,20 @@
             Obtém as pessoas de uma unidade
             </summary>
             <param name="unidadeId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.PostUnidade(Susep.SISRH.Application.Commands.Unidade.CadastrarUnidadeCommand)">
+            <summary>
+            Cadastra uma unidade
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
+            <returns></returns>
+        </member>
+        <member name="M:Susep.SISRH.WebApi.Controllers.UnidadeController.PutUnidade(Susep.SISRH.Application.Commands.Unidade.AlterarUnidadeCommand)">
+            <summary>
+            Altera uma unidade
+            </summary>
+            <param name="command">Dados do item de catálogo a ser cadastrado</param>
             <returns></returns>
         </member>
         <member name="T:Susep.SISRH.WebApi.Program">
@@ -995,7 +1269,7 @@
             Construtor das configuraçoes do sistema
             </summary>
         </member>
-        <member name="M:Susep.SISRH.WebApi.Startup.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:Susep.SISRH.WebApi.Startup.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             Construtor da classe
             </summary>

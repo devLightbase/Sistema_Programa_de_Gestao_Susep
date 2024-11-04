@@ -15,6 +15,7 @@
 .classpath
 .c9/
 *.launch
+*.cs.bak
 .settings/
 *.sublime-workspace
 

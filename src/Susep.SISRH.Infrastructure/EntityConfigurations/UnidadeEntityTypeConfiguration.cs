@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,18 +10,18 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Unidade> builder)
         {
-            builder.ToTable("VW_UnidadeSiglaCompleta");
+            builder.ToTable("vw_unidadesiglacompleta");
 
             builder.HasKey(p => p.UnidadeId);
 
             builder.Ignore(p => p.Id)
                    .Ignore(p => p.RequestedHashCode);
 
-            builder.Property(p => p.UnidadeId).HasColumnName("unidadeId");
-            builder.Property(p => p.Sigla).HasColumnName("undSigla");
-            builder.Property(p => p.SiglaCompleta).HasColumnName("undSiglaCompleta");            
-            builder.Property(p => p.Nome).HasColumnName("undDescricao");
-            builder.Property(p => p.UfId).HasColumnName("ufId");
+            builder.Property(p => p.UnidadeId).HasColumnName("unidadeid");
+            builder.Property(p => p.Sigla).HasColumnName("undsigla");
+            builder.Property(p => p.SiglaCompleta).HasColumnName("undsiglacompleta");            
+            builder.Property(p => p.Nome).HasColumnName("unddescricao");
+            builder.Property(p => p.UfId).HasColumnName("ufid");
 
         }
 

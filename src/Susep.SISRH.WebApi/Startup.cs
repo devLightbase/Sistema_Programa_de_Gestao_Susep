@@ -3,11 +3,13 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.OpenApi.Models;
 using Susep.SISRH.Application.Configurations;
 using SUSEP.Framework.CoreFilters.Concrete;
@@ -35,9 +37,23 @@ namespace Susep.SISRH.WebApi
         /// Construtor da classe
         /// </summary>
         /// <param name="env"></param>
-        public Startup(IWebHostEnvironment env, IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            try
+            {
+                Builder = new ConfigurationBuilder().SetBasePath(Path.Combine(env.ContentRootPath, "Settings"))
+                                                    .AddJsonFile($"connectionstrings.{env.EnvironmentName}.json", true, true)
+                                                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+                                                    .AddJsonFile($"messagebroker.{env.EnvironmentName}.json", true, true)
+                                                    .AddEnvironmentVariables();
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            Configuration = Builder.Build();
         }
 
         /// <summary>
@@ -47,6 +63,7 @@ namespace Susep.SISRH.WebApi
         /// <returns></returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
             services.AddControllers().AddNewtonsoftJson();
             services.AddAutofac();
 
@@ -103,7 +120,7 @@ namespace Susep.SISRH.WebApi
 
             container.Populate(services);
             container.RegisterModule(new MediatorModuleConfiguration());
-            container.RegisterModule(new ApplicationModuleConfiguration(Configuration));
+            container.RegisterModule(new ApplicationModuleConfiguration(Configuration, services));
 
             return new AutofacServiceProvider(container.Build());
         }

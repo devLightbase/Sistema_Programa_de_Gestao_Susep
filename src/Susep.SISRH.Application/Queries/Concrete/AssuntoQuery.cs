@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 using Susep.SISRH.Application.Queries.Abstractions;
 using Susep.SISRH.Application.Queries.RawSql;
 using Susep.SISRH.Application.Requests;
@@ -11,7 +12,7 @@ using SUSEP.Framework.Result.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             parameters.Add("@offset", (request.Page - 1) * request.PageSize, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@pageSize", request.PageSize, DbType.Int32, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -59,7 +60,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
         {
             var result = new ApplicationResult<IEnumerable<AssuntoViewModel>>();
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -79,7 +80,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@id", id, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -112,7 +113,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@texto", texto, DbType.String, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -132,7 +133,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@assuntoId", assuntoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -152,7 +153,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@assuntoId", assuntoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -173,7 +174,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             parameters.Add("@valor", valor, DbType.String, ParameterDirection.Input);
             parameters.Add("@assuntoId", assuntoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 

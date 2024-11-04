@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PlanoTrabalhoObjeto> builder)
         {
-            builder.ToTable("PlanoTrabalhoObjeto", "ProgramaGestao");
+            builder.ToTable("planotrabalhoobjeto", "programagestao");
 
             builder.HasKey(p => p.PlanoTrabalhoObjetoId);
 
@@ -18,21 +18,21 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.PlanoTrabalhoObjetoId)
-                   .HasColumnName("planoTrabalhoObjetoId")
-                   .ValueGeneratedOnAdd(); ;
+                   .HasColumnName("planotrabalhoobjetoid")
+                   .ValueGeneratedOnAdd();
             
-            builder.Property(p => p.PlanoTrabalhoId).HasColumnName("planoTrabalhoId");
-            builder.Property(p => p.ObjetoId).HasColumnName("objetoId");
+            builder.Property(p => p.PlanoTrabalhoId).HasColumnName("planotrabalhoid");
+            builder.Property(p => p.ObjetoId).HasColumnName("objetoid");
 
             builder.HasOne(p => p.PlanoTrabalho)
                    .WithMany(p => p.Objetos)
                    .HasForeignKey(p => p.PlanoTrabalhoId)
-                   .HasConstraintName("FK_PlanoTrabalhoObjeto_PlanoTrabalho");
+                   .HasConstraintName("fk_planotrabalhoobjeto_planotrabalho");
 
             builder.HasOne(p => p.Objeto)
                    .WithMany()
                    .HasForeignKey(p => p.ObjetoId)
-                   .HasConstraintName("FK_PlanoTrabalhoObjeto_Objeto");
+                   .HasConstraintName("fk_planotrabalhoobjeto_objeto");
 
         }
 

@@ -1,0 +1,67 @@
+<section>
+    <div class="container">
+      <header class="content-header pb-5 pb-sm-8 pt-3">
+        <h1 class="content-title">Catálogo Domínio</h1>
+        <p>Veja a lista do catálogo domínio</p>
+      </header>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="br-form">
+          <fieldset>          
+            <div class="row">
+              <div class="col-6">
+                <div class="field">
+                  <div class="br-input">
+                    <label for="classificacao">Classificação</label>
+                    <input id="classificacao" type="text" formControlName="classificacao" placeholder="Insira um texto para filtrar">
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="field">
+                  <div class="br-input">
+                    <label for="descricao">Descrição</label>
+                    <input id="descricao" type="text" formControlName="descricao" placeholder="Insira um texto para filtrar">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <div class="actions justify-content-start">
+            <button class="br-button is-primary ml-2" type="submit"><i class="fa fa-search"></i> Filtrar</button>
+          </div>
+        </div>
+      </form>
+      <div>
+        <div class="table-responsive">
+          <div class="br-table">
+            <div class="table">
+              <table class="full-width-table table-striped table-style mat-elevation-z8">
+                <thead>
+                  <tr>
+                    <th>Cod.</th>
+                    <th>Classificação</th>
+                    <th>Descrição</th>
+                    <th>Ativo</th>
+                  </tr>
+                </thead>
+                <tbody>                
+                  <tr *ngFor="let item of dadosEncontrados?.registros">
+                    <td>{{item.CatalogoDominioId}}</td>
+                    <td>{{item.Classificacao}}</td>
+                    <td>{{item.Descricao}}</td>
+                    <td *ngIf="item.Ativo">Sim</td>
+                    <td *ngIf="!item.Ativo">Não</td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" *ngIf="dadosEncontrados?.controle.totalRegistros === 0" class="text-center">Nenhum item encontrado</td>
+                  </tr>
+                </tbody>
+              </table>
+              <app-pagination [controlePaginacao]="dadosEncontrados?.controle" (changePage)="changePage($event)"></app-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

@@ -6,6 +6,8 @@ using SUSEP.Framework.Result.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Susep.SISRH.Application.Commands.Unidade;
+using MediatR;
 
 
 namespace Susep.SISRH.WebApi.Controllers
@@ -21,6 +23,7 @@ namespace Susep.SISRH.WebApi.Controllers
         private readonly IUnidadeQuery UnidadeQuery;
         private readonly IDominioQuery DominioQuery;
         private readonly IEstruturaOrganizacionalQuery EstruturaOrganizacionalQuery;
+        private IMediator Mediator { get; }
 
         /// <summary>
         /// Contrutor da classe
@@ -28,11 +31,13 @@ namespace Susep.SISRH.WebApi.Controllers
         /// <param name="unidadeQuery"></param>
         /// <param name="dominioQuery"></param>
         /// <param name="estruturaOrganizacionalQuery"></param>     
-        public UnidadeController(IUnidadeQuery unidadeQuery, IDominioQuery dominioQuery, IEstruturaOrganizacionalQuery estruturaOrganizacionalQuery)
+        /// <param name="mediator"></param>     
+        public UnidadeController(IUnidadeQuery unidadeQuery, IDominioQuery dominioQuery, IEstruturaOrganizacionalQuery estruturaOrganizacionalQuery, IMediator mediator)
         {
             UnidadeQuery = unidadeQuery;
             DominioQuery = dominioQuery;
             EstruturaOrganizacionalQuery = estruturaOrganizacionalQuery;
+            Mediator = mediator;
         }
 
         /// <summary>
@@ -45,6 +50,16 @@ namespace Susep.SISRH.WebApi.Controllers
             => await UnidadeQuery.ObterAtivasDadosComboAsync();
 
         /// <summary>
+        /// Obtém todas as unidades ativas com todos os detalhes de cada unidade
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpGet(), Produces("application/json", Type = typeof(IApplicationResult<IEnumerable<UnidadeViewModel>>))]
+        public async Task<IActionResult> GetAll([FromQuery] UnidadeFiltroRequest request)
+        {
+            return await UnidadeQuery.ObterAtivasTotal(request);
+        }
+        /// <summary>
         /// Obtém as unidades ativas para preenchimento de combos
         /// </summary>
         /// <param name="request"></param>
@@ -52,6 +67,14 @@ namespace Susep.SISRH.WebApi.Controllers
         [HttpGet("ativas"), Produces("application/json", Type = typeof(IApplicationResult<IEnumerable<DadosComboViewModel>>))]
         public async Task<IActionResult> GetAtivasDadosCombo([FromRoute]UsuarioLogadoRequest request)
             => await EstruturaOrganizacionalQuery.ObterUnidadesAtivasDadosComboAsync(request);
+
+        /// <summary>
+        /// Obtém as unidades ativas para preenchimento de combos
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("combo"), Produces("application/json", Type = typeof(IApplicationResult<IEnumerable<DadosComboViewModel>>))]
+        public async Task<IActionResult> GetDadosCombo()
+            => await UnidadeQuery.ObterUnidadesCombo();
 
 
         /// <summary>
@@ -90,6 +113,15 @@ namespace Susep.SISRH.WebApi.Controllers
         public async Task<IActionResult> GetById([FromRoute]Int64 unidadeId)
             => await UnidadeQuery.ObterPorChaveAsync(unidadeId);
 
+        /// <summary>
+        /// Obtém os dados de uma unidade
+        /// </summary>
+        /// <param name="unidadeId"></param>
+        /// <returns></returns>
+        [HttpGet("db/{unidadeId}"), Produces("application/json", Type = typeof(IApplicationResult<UnidadeViewModel>))]
+        public async Task<IActionResult> GetUnidadeById([FromRoute] Int64 unidadeId)
+            => await UnidadeQuery.ObterUnidadePorChaveAsync(unidadeId);
+
 
         /// <summary>
         /// Obtém as modalidades de execução de uma unidade
@@ -108,5 +140,27 @@ namespace Susep.SISRH.WebApi.Controllers
         [HttpGet("{unidadeId}/pessoas"), Produces("application/json", Type = typeof(IApplicationResult<DadosComboViewModel>))]
         public async Task<IActionResult> GetPessoasById([FromRoute]Int64 unidadeId)
             => await UnidadeQuery.ObterPessoasDadosComboAsync(unidadeId);
+
+        /// <summary>
+        /// Cadastra uma unidade
+        /// </summary>
+        /// <param name="command">Dados do item de catálogo a ser cadastrado</param>
+        /// <returns></returns>
+        [HttpPost(), Produces("application/json", Type = typeof(IApplicationResult<Guid>))]
+        public async Task<IActionResult> PostUnidade([FromBody] CadastrarUnidadeCommand command)
+        {
+            return await Mediator.Send(command);
+        }
+
+        /// <summary>
+        /// Altera uma unidade
+        /// </summary>
+        /// <param name="command">Dados do item de catálogo a ser cadastrado</param>
+        /// <returns></returns>
+        [HttpPut(), Produces("application/json", Type = typeof(IApplicationResult<Guid>))]
+        public async Task<IActionResult> PutUnidade([FromBody] AlterarUnidadeCommand command)
+        {
+            return await Mediator.Send(command);
+        }
     }
 }

@@ -17,6 +17,7 @@ using Susep.SISRH.Application.Queries.Abstractions;
 using Susep.SISRH.Application.ViewModels;
 using Susep.SISRH.Domain.Enums;
 using Susep.SISRH.Application.Queries.RawSql;
+using Npgsql;
 
 namespace Susep.SISRH.Application.Queries.Concrete
 {
@@ -34,7 +35,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
         {
             IApplicationResult<IEnumerable<DominioViewModel>> result = new ApplicationResult<IEnumerable<DominioViewModel>>();
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -54,7 +55,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
         {
             IApplicationResult<IEnumerable<DominioViewModel>> result = new ApplicationResult<IEnumerable<DominioViewModel>>();
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 

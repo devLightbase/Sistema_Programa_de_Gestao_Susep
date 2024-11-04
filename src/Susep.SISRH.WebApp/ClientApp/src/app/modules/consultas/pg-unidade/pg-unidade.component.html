@@ -1,0 +1,162 @@
+<section>
+  <div class="container">
+    <header class="content-header pb-5 pb-sm-8 pt-3">
+      <h1 class="content-title">Programas de Gestão por Unidade</h1>
+      <p>Lista da quantidade de pessoas no programa de gestão por unidade</p>
+    </header>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="br-form">
+        <fieldset>
+          <div class="row">
+            <div class="col-6">
+              <div class="field">
+                <div class="br-input">
+                  <label for="sigla">Sigla</label>
+                  <input id="sigla" type="text" formControlName="sigla" placeholder="Insira um texto para filtrar">
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="field">
+                <div class="br-input">
+                  <label for="descricao">Descrição</label>
+                  <input id="descricao" type="text" formControlName="descricao"
+                    placeholder="Insira um texto para filtrar">
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <div class="actions justify-content-start">
+          <button class="br-button is-primary ml-2" type="submit"><i class="fa fa-search"></i> Filtrar</button>
+        </div>
+      </div>
+    </form>
+    <div><b style="color: #0c326f">{{contagem.unidades}}</b> unidade(s) na instituição, com <b style="color: #0c326f">{{contagem.pessoas}}</b> pessoa(s) cadastradas no SISPG</div>
+    <div style="margin-bottom: 24px;"><b style="color: #0c326f">{{contagem.unidades_lista}}</b> unidade(s) nessa lista, com <b style="color: #0c326f">{{contagem.pactos_vigentes}}</b> pacto(s) vigentes</div>
+    <div>
+      <div class="table-responsive">
+        <div class="br-table">
+          <div class="table">
+            <table class="full-width-table table-striped table-style mat-elevation-z8">
+              <thead>
+                <tr>
+                  <th>Sigla</th>
+                  <th>Descrição</th>
+                  <th style="text-align: center">Programas de Gestão</th>
+                  <th style="text-align: center">Pessoas</th>
+                  <th style="text-align: center">Pactos Vigentes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of dadosEncontrados?.registros">
+                  <td>{{item.sigla}}</td>
+                  <td>{{item.descricao}}</td>
+                  <td *ngIf="item.n_pg" style="text-align: center"><a href="javascript:void(0)"
+                      (click)="mostrarProgramaGestao(item.sigla, 1)">{{item.n_pg}}</a></td>
+                  <td *ngIf="!item.n_pg" style="text-align: center">{{item.n_pg}}</td>
+                  <td style="text-align: center">{{item.n_pessoas}}</td>
+                  <td *ngIf="item.n_vigentes" style="text-align: center"><a href="javascript:void(0)"
+                      (click)="mostrarPactosVigentes(item.sigla, 1)">{{item.n_vigentes}}</a></td>
+                  <td *ngIf="!item.n_vigentes" style="text-align: center">{{item.n_vigentes}}</td>
+                </tr>
+                <tr>
+                  <td colspan="5" *ngIf="dadosEncontrados?.controle.totalRegistros === 0" class="text-center">Nenhum
+                    item encontrado</td>
+                </tr>
+              </tbody>
+            </table>
+            <app-pagination [controlePaginacao]="dadosEncontrados?.controle"
+              (changePage)="changePage($event)"></app-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #modalProgramaGestao let-modal>
+  <div class="br-modal is-large">
+    <div class="br-modal-dialog">
+      <div class="br-modal-content">
+        <div style="text-align: center" class="br-modal-header">
+          <h2 style="color: #0c326f; width: 100%; font-size: 22px" class="br-modal-title">Programa de Gestão({{sigla}})
+          </h2>
+        </div>
+        <div class="br-modal-body">
+          <div class="table-responsive">
+            <div class="br-table">
+              <div class="table">
+                <table class="full-width-table table-striped table-style mat-elevation-z8">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center">Início</th>
+                      <th style="text-align: center">Fim</th>
+                      <th style="text-align: center">Situação</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of programaGestaoModal?.registros">
+                      <td style="text-align: center">{{formatData(item.data_inicio)}}</td>
+                      <td style="text-align: center">{{formatData(item.data_fim)}}</td>
+                      <td style="text-align: center">{{item.Situacao}}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" *ngIf="programaGestaoModal?.controle.totalRegistros === 0" class="text-center">
+                        Nenhum item encontrado</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <app-pagination [controlePaginacao]="programaGestaoModal?.controle"
+                  (changePage)="mostrarProgramaGestao(pgModalPesquisa.sigla, $event)"></app-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalPactosVigentes let-modal>
+  <div class="br-modal is-large">
+    <div class="br-modal-dialog">
+      <div class="br-modal-content">
+        <div style="text-align: center" class="br-modal-header">
+          <h2 style="color: #0c326f; width: 100%; font-size: 22px" class="br-modal-title">Pactos na Unidade {{sigla}}
+          </h2>
+        </div>
+        <div class="br-modal-body">
+          <div class="table-responsive">
+            <div class="br-table">
+              <div class="table">
+                <table class="full-width-table table-striped table-style mat-elevation-z8">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center">Nome</th>
+                      <th style="text-align: center">Início</th>
+                      <th style="text-align: center">Fim</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of pactosVigentesModal?.registros">
+                      <td style="text-align: center">{{item.Nome}}</td>
+                      <td style="text-align: center">{{formatData(item.data_inicio)}}</td>
+                      <td style="text-align: center">{{formatData(item.data_fim)}}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" *ngIf="pactosVigentesModal?.controle.totalRegistros === 0" class="text-center">
+                        Nenhum item encontrado</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <app-pagination [controlePaginacao]="pactosVigentesModal?.controle"
+                  (changePage)="mostrarPactosVigentes(pactosVigentesModalPesquisa.sigla, $event)"></app-pagination>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

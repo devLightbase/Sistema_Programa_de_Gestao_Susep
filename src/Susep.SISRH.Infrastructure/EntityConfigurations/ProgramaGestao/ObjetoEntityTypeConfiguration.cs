@@ -8,7 +8,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<Objeto> builder)
         {
-            builder.ToTable("Objeto", "ProgramaGestao");
+            builder.ToTable("objeto", "programagestao");
 
             builder.HasKey(p => p.ObjetoId);
 
@@ -18,6 +18,8 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
             builder.Property(p => p.Chave)
                    .HasColumnName("chave")
                    .HasMaxLength(20);
+            builder.Property(p => p.ObjetoId)
+                       .HasColumnName("objetoid");
 
             builder.Property(p => p.Descricao)
                    .HasColumnName("descricao")

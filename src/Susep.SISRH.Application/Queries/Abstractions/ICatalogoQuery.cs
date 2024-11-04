@@ -11,7 +11,12 @@ namespace Susep.SISRH.Application.Queries.Abstractions
     public interface ICatalogoQuery
     {
         Task<IApplicationResult<DadosPaginadosViewModel<CatalogoViewModel>>> ObterPorFiltroAsync(CatalogoFiltroRequest request);
-        Task<IApplicationResult<CatalogoViewModel>> ObterPorChaveAsync(Guid catalogoid);
+        Task<IApplicationResult<DadosPaginadosViewModel<CatalogoDominioViewModel>>> ObterCatalogoDominioPorFiltroAsync(CatalogoDominioFiltroRequest request);
+        Task<IApplicationResult<DadosPaginadosViewModel<PgViewModel>>> ObterPgUnidadeAsync(PgUnidadeFiltroRequest request);
+        Task<IApplicationResult<DadosPaginadosViewModel<ProgramaGestaoModalViewModel>>> ObterProgramaGestaoModal(ProgramaGestaoModalFiltroRequest request);
+        Task<IApplicationResult<DadosPaginadosViewModel<PactosVigentesModalViewModel>>> ObterPactosVigentesModal(PactosVigentesModalFiltroRequest request);
+        Task<IApplicationResult<ContagemViewModel>> ObterContagem();
+        Task<IApplicationResult<CatalogoViewModel>> ObterPorChaveAsync(Guid catalogoid); 
         Task<IApplicationResult<CatalogoViewModel>> ObterPorUnidadeAsync(Int32 unidadeId);
         Task<IApplicationResult<IEnumerable<ItemCatalogoViewModel>>> ObterItensPorUnidadeAsync(Int32 unidadeId);
         

@@ -53,7 +53,14 @@ namespace Susep.SISRH.Application.ViewModels
         [DataMember(Name = "tipoVinculo")]
         public String TipoVinculo { get; set; }
 
+        [DataMember(Name = "dataNascimento")]
+        public DateTime? DataNascimento { get; set; }
+        
+        [DataMember(Name = "cpf")]
+        public String Cpf { get; set; }
 
+        [DataMember(Name = "matriculaSiape")]
+        public String MatriculaSiape { get; set; }
 
 
         [DataMember(Name = "candidaturas")]

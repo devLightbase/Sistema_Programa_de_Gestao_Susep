@@ -8,7 +8,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PlanoTrabalhoReuniao> builder)
         {
-            builder.ToTable("PlanoTrabalhoReuniao", "ProgramaGestao");
+            builder.ToTable("planotrabalhoreuniao", "programagestao");
 
             builder.HasKey(p => p.PlanoTrabalhoReuniaoId);
 
@@ -16,24 +16,25 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.PlanoTrabalhoReuniaoId)
-                .HasColumnName("planoTrabalhoReuniaoId")
+                .HasColumnName("planotrabalhoreuniaoid")
                 .ValueGeneratedOnAdd();
             
-            builder.Property(p => p.PlanoTrabalhoId).HasColumnName("planoTrabalhoId");
+            builder.Property(p => p.PlanoTrabalhoId).HasColumnName("planotrabalhoid");
             builder.Property(p => p.Data).HasColumnName("data");
             builder.Property(p => p.Titulo).HasColumnName("titulo");
             builder.Property(p => p.Descricao).HasColumnName("descricao");
+            builder.Property(p => p.PlanoTrabalhoObjetoId).HasColumnName("planotrabalhoobjetoid");
 
 
             builder.HasOne(p => p.PlanoTrabalho)
                    .WithMany(p => p.Reunioes)
                    .HasForeignKey(p => p.PlanoTrabalhoId)
-                   .HasConstraintName("FK_PlanoTrabalhoReuniao_PlanoTrabalho");
+                   .HasConstraintName("fk_planotrabalhoreuniao_planotrabalho");
 
             builder.HasOne(p => p.PlanoTrabalhoObjeto)
                    .WithMany(p => p.Reunioes)
                    .HasForeignKey(p => p.PlanoTrabalhoObjetoId)
-                   .HasConstraintName("FK_PlanoTrabalhoReuniao_PlanoTrabalhoObjeto");
+                   .HasConstraintName("fk_planotrabalhoreuniao_planotrabalhoobjeto");
 
         }
 

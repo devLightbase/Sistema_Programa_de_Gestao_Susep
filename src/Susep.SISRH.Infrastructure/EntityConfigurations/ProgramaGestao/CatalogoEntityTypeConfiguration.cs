@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<Catalogo> builder)
         {
-            builder.ToTable("Catalogo", "ProgramaGestao");
+            builder.ToTable("catalogo", "programagestao");
 
             builder.HasKey(p => p.CatalogoId);
 
@@ -18,13 +18,15 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.CatalogoId)
-                   .HasColumnName("catalogoId");
-
+                   .HasColumnName("catalogoid");
+                   
+            builder.Property(p => p.UnidadeId)
+                   .HasColumnName("unidadeid");
 
             builder.HasOne(p => p.Unidade)
                    .WithMany(p => p.Catalogos)
                    .HasForeignKey(p => p.UnidadeId)
-                   .HasConstraintName("FK_Catalogo_Unidade");
+                   .HasConstraintName("fk_catalogo_unidade");
 
         }
 

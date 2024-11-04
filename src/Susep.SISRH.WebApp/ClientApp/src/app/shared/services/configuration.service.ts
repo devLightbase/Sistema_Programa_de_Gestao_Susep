@@ -41,6 +41,7 @@ export class ConfigurationService {
 
     } as IConfiguration;
 
+
     this.storageService.store('identityUrl', this.serverSettings.identityUrl);
     this.storageService.store('apiGatewayUrl', this.serverSettings.apiGatewayUrl);
 
@@ -57,7 +58,6 @@ export class ConfigurationService {
     // Para permitir exibir o modo avançado durante a homologação
     this.applicationStateService.perfilUsuario.subscribe(usuario => {
       if (usuario && usuario.perfis.find(p => p.perfil === 1009)) {
-        console.log('Setou modo avançado!');
         this.storageService.store('modo', 'avancado');
       }
     });
@@ -76,7 +76,7 @@ export class ConfigurationService {
   }
 
   //Retorna a url para a página de autenticação
-  getIdentityUrl(): string {    
+  getIdentityUrl(): string {
     const url = this.storageService.retrieve('identityUrl');
     if (url) {
       return url.endsWith('/') ? url : `${url}/`;

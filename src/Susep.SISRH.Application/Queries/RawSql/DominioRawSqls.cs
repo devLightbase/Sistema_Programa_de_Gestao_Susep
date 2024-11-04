@@ -8,10 +8,10 @@
             get
             {
                 return @"
-                    SELECT catalogoDominioId as id, descricao
-                    FROM [dbo].[CatalogoDominio]
+                    SELECT catalogodominioid as id, descricao
+                    FROM dbo.catalogodominio
                     WHERE classificacao = @classificacao 
-                        AND ativo = 1
+                        AND ativo = true
                     ORDER BY descricao
                     ";
             }
@@ -22,9 +22,9 @@
             get
             {
                 return @"
-                    SELECT catalogoDominioId as id, descricao
-                    FROM [dbo].[CatalogoDominio]
-                    WHERE catalogoDominioId = @id                        
+                    SELECT catalogodominioid as id, descricao
+                    FROM dbo.catalogodominio
+                    WHERE catalogodominioid = @id                        
                     ORDER BY descricao
                     ";
             }

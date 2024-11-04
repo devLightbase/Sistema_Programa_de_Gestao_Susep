@@ -16,7 +16,6 @@ export class EnvironmentService implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log(environment)
     this.identityUrl = environment.identityUrl;
     this.apiGatewayUrl = environment.apiGatewayUrl;
     this.modo = environment.modo;

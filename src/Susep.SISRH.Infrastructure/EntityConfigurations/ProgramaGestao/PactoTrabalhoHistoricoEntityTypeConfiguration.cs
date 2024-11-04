@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PactoTrabalhoHistorico> builder)
         {
-            builder.ToTable("PactoTrabalhoHistorico", "ProgramaGestao");
+            builder.ToTable("pactotrabalhohistorico", "programagestao");
 
             builder.HasKey(p => p.PactoTrabalhoHistoricoId);
 
@@ -18,25 +18,25 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.PactoTrabalhoHistoricoId)
-                   .HasColumnName("pactoTrabalhoHistoricoId")
+                   .HasColumnName("pactotrabalhohistoricoid")
                    .ValueGeneratedOnAdd();
 
-            builder.Property(p => p.PactoTrabalhoId).HasColumnName("pactoTrabalhoId");
-            builder.Property(p => p.SituacaoId).HasColumnName("situacaoId");
+            builder.Property(p => p.PactoTrabalhoId).HasColumnName("pactotrabalhoid");
+            builder.Property(p => p.SituacaoId).HasColumnName("situacaoid");
             builder.Property(p => p.Observacoes).HasColumnName("observacoes");
-            builder.Property(p => p.ResponsavelOperacao).HasColumnName("responsavelOperacao");
-
-
+            builder.Property(p => p.ResponsavelOperacao).HasColumnName("responsaveloperacao");
+            builder.Property(p => p.DataOperacao).HasColumnName("dataoperacao");
+                        
 
             builder.HasOne(p => p.PactoTrabalho)
                    .WithMany(p => p.Historico)
                    .HasForeignKey(p => p.PactoTrabalhoId)
-                   .HasConstraintName("FK_PactoTrabalhoHistorico_PactoTrabalho");
+                   .HasConstraintName("fk_pactotrabalhohistorico_pactotrabalho");
 
             builder.HasOne(p => p.Situacao)
                    .WithMany(p => p.HistoricoPactosTrabalho)
                    .HasForeignKey(p => p.SituacaoId)
-                   .HasConstraintName("FK_PactoTrabalhoHistorico_Situacao");
+                   .HasConstraintName("fk_pactotrabalhohistorico_situacao");
 
 
         }

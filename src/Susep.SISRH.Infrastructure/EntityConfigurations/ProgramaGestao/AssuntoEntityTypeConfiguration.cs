@@ -8,7 +8,10 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<Assunto> builder)
         {
-            builder.ToTable("Assunto", "ProgramaGestao");
+            builder.ToTable("assunto", "programagestao");
+
+            builder.Property(p => p.AssuntoId).HasColumnName("assuntoid");
+            builder.Property(p => p.AssuntoPaiId).HasColumnName("assuntopaiid");
 
             builder.HasKey(p => p.AssuntoId);
 
@@ -25,7 +28,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
             builder.HasOne(p => p.AssuntoPai)
                    .WithMany()
                    .HasForeignKey(p => p.AssuntoPaiId)
-                   .HasConstraintName("FK_Assunto_AssuntoPai");
+                   .HasConstraintName("fk_assunto_assuntopai");
 
         }
 

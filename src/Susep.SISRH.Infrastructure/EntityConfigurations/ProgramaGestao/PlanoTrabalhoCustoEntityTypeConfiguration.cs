@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PlanoTrabalhoCusto> builder)
         {
-            builder.ToTable("PlanoTrabalhoCusto", "ProgramaGestao");
+            builder.ToTable("planotrabalhocusto", "programagestao");
 
             builder.HasKey(p => p.PlanoTrabalhoCustoId);
 
@@ -18,22 +18,24 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.PlanoTrabalhoCustoId)
-                .HasColumnName("planoTrabalhoCustoId")
+                .HasColumnName("planotrabalhocustoid")
                 .ValueGeneratedOnAdd();
             
-            builder.Property(p => p.PlanoTrabalhoId).HasColumnName("planoTrabalhoId");
+            builder.Property(p => p.PlanoTrabalhoId).HasColumnName("planotrabalhoid");
+	        builder.Property(p => p.PlanoTrabalhoObjetoId).HasColumnName("planotrabalhoobjetoid");
             builder.Property(p => p.Valor).HasColumnName("valor");
             builder.Property(p => p.Descricao).HasColumnName("descricao");
+            builder.Property(p => p.PlanoTrabalhoObjetoId).HasColumnName("planotrabalhoobjetoid");
 
             builder.HasOne(p => p.PlanoTrabalho)
                    .WithMany(p => p.Custos)
                    .HasForeignKey(p => p.PlanoTrabalhoId)
-                   .HasConstraintName("FK_PlanoTrabalhoCusto_PlanoTrabalho");
+                   .HasConstraintName("fk_planotrabalhocusto_planotrabalho");
 
             builder.HasOne(p => p.PlanoTrabalhoObjeto)
                    .WithMany(p => p.Custos)
                    .HasForeignKey(p => p.PlanoTrabalhoObjetoId)
-                   .HasConstraintName("FK_PlanoTrabalhoCusto_PlanoTrabalhoObjeto");
+                   .HasConstraintName("fk_planotrabalhocusto_planotrabalhoobjeto");
 
         }
     }

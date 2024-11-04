@@ -5,14 +5,72 @@
   </PropertyGroup>
 
 
-  <ItemGroup>
-    <PackageReference Include="SUSEP.Framework.Result" Version="3.3.2" />
-    <PackageReference Include="SUSEP.Framework.SeedWorks" Version="3.7.3" />
-  </ItemGroup>
-  
+
+
   <ItemGroup>
     <Folder Include="Events\" />
     <Folder Include="Mappers\" />
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SUSEP.Framework.SeedWorks">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.SeedWorks.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="Result">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.Result.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CoreFilters">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.CoreFilters.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Data">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.Data.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Messages">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.Messages.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Utils">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.Utils.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="MessageBroker">
+      <HintPath>D:\Trabalho-Faculdade\LightBase\SISPG\Sistema_Programa_de_Gestao_Susep\install\Susep.SISRH.WebApi\SUSEP.Framework.MessageBroker.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <!-- You may set it to true if your dll has a specific version -->
+    </Reference>
   </ItemGroup>
 
 </Project>

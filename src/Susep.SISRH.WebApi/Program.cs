@@ -37,5 +37,7 @@ namespace Susep.SISRH.WebApi
                              .AddEnvironmentVariables())
                    .UseSerilog((context, logger) => logger.ReadFrom.Configuration(context.Configuration))
                    .UseStartup<Startup>();
+
+        
     }
 }

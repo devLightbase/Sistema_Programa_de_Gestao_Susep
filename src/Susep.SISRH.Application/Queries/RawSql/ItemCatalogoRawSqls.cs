@@ -9,29 +9,29 @@
             get
             {
                 return @"
-					SELECT  i.itemCatalogoId 
+					SELECT  i.itemcatalogoid 
 							,i.titulo         
-							,i.calculoTempoId formaCalculoTempoItemCatalogoId
-							,cd.descricao formaCalculoTempoItemCatalogo 
-							,i.permiteRemoto permiteTrabalhoRemoto 
-							,i.tempoPresencial tempoExecucaoPresencial
-							,i.tempoRemoto tempoExecucaoRemoto   
+							,i.calculotempoid formacalculotempoitemcatalogoid
+							,cd.descricao formacalculotempoitemcatalogo 
+							,i.permiteremoto permitetrabalhoremoto 
+							,i.tempoPresencial tempoexecucaopresencial
+							,i.tempoRemoto tempoexecucaoremoto   
 							,i.descricao   
                             ,i.complexidade   
-                            ,i.definicaoComplexidade   
-                            ,i.entregasEsperadas    
-                            ,(SELECT CAST(COUNT(1) AS BIT) FROM [ProgramaGestao].[PactoTrabalhoAtividade] WHERE itemCatalogoId = i.itemCatalogoId) temPactoCadastrado
-                            ,(SELECT CAST(COUNT(1) AS BIT) FROM [ProgramaGestao].[CatalogoItemCatalogo] WHERE itemCatalogoId = i.itemCatalogoId) temUnidadeAssociada
-                    FROM [ProgramaGestao].[ItemCatalogo] i
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON i.calculoTempoId = cd.catalogoDominioId
-                    WHERE i.itemCatalogoId = @itemCatalogoId;
+                            ,i.definicaocomplexidade   
+                            ,i.entregasesperadas    
+                            ,(SELECT CAST(COUNT(1) AS bit) FROM programagestao.pactotrabalhoatividade WHERE itemcatalogoid = i.itemcatalogoid) temPactoCadastrado
+                            ,(SELECT CAST(COUNT(1) AS bit) FROM programagestao.catalogoitemcatalogo WHERE itemcatalogoid = i.itemcatalogoid) temUnidadeAssociada                    
+                    FROM programagestao.itemcatalogo i
+	                    INNER JOIN dbo.catalogodominio cd ON i.calculotempoid = cd.catalogodominioid
+                    WHERE i.itemcatalogoid = @itemcatalogoid;
 
-                    SELECT  a.assuntoId
+                    SELECT  a.assuntoid
 		                    ,a.valor
 		                    ,a.hierarquia
-                    FROM [ProgramaGestao].[ItemCatalogoAssunto] ica
-	                    LEFT OUTER JOIN [ProgramaGestao].[VW_AssuntoChaveCompleta] a ON ica.assuntoId = a.assuntoId
-                    WHERE ica.itemCatalogoId = @itemCatalogoId;                
+                    FROM programagestao.itemcatalogoassunto ica
+	                    LEFT OUTER JOIN programagestao.vw_assuntochavecompleta a ON ica.assuntoid = a.assuntoid
+                    WHERE ica.itemcatalogoid = @itemcatalogoid;                
                 ";
             }
         }
@@ -42,22 +42,22 @@
             get
             {
                 return @"
-				SELECT  i.itemCatalogoId 
+				SELECT  i.itemcatalogoid 
 		                ,i.titulo         
-		                ,i.calculoTempoId formaCalculoTempoItemCatalogoId
-		                ,cd.descricao formaCalculoTempoItemCatalogo 
-		                ,i.permiteRemoto permiteTrabalhoRemoto 
-		                ,i.tempoPresencial tempoExecucaoPresencial
-		                ,i.tempoRemoto tempoExecucaoRemoto   
+		                ,i.calculotempoid formacalculotempoitemcatalogoid
+		                ,cd.descricao formacalculotempoitemcatalogo 
+		                ,i.permiteremoto permitetrabalhoremoto 
+		                ,i.tempopresencial tempoexecucaopresencial
+		                ,i.temporemoto tempoexecucaoremoto   
 		                ,i.descricao      
                         ,i.complexidade   
-                        ,i.definicaoComplexidade   
-                        ,i.entregasEsperadas  		
-                FROM [ProgramaGestao].[ItemCatalogo] i
-	                INNER JOIN [dbo].[CatalogoDominio] cd ON i.calculoTempoId = cd.catalogoDominioId
-	                INNER JOIN [ProgramaGestao].[CatalogoItemCatalogo] cic ON i.itemCatalogoId = cic.itemCatalogoId
-	                INNER JOIN [ProgramaGestao].[Catalogo] cat ON cic.catalogoId = cat.catalogoId
-                WHERE cat.unidadeId = @unidadeId
+                        ,i.definicaocomplexidade   
+                        ,i.entregasesperadas  		
+                FROM programagestao.itemcatalogo i
+	                INNER JOIN dbo.catalogodominio cd ON i.calculotempoid = cd.catalogodominioid
+	                INNER JOIN programagestao.catalogoitemcatalogo cic ON i.itemcatalogoid = cic.itemcatalogoid
+	                INNER JOIN programagestao.catalogo cat ON cic.catalogoId = cat.catalogoId
+                WHERE cat.unidadeid = @unidadeid
                 ORDER BY i.titulo, i.complexidade
                 ";
             }
@@ -68,22 +68,22 @@
             get
             {
                 return @"
-					SELECT  i.itemCatalogoId 
+					SELECT  i.itemcatalogoid 
 							,i.titulo             
-							,i.calculoTempoId formaCalculoTempoItemCatalogoId
-		                    ,cd.descricao formaCalculoTempoItemCatalogo 
-							,i.permiteRemoto permiteTrabalhoRemoto 
-							,i.tempoPresencial tempoExecucaoPresencial
-							,i.tempoRemoto tempoExecucaoRemoto   
+							,i.calculotempoid formacalculotempoitemcatalogoid
+							,cd.descricao formacalculotempoitemcatalogo 
+							,i.permiteremoto permitetrabalhoremoto 
+							,i.tempoPresencial tempoexecucaopresencial
+							,i.tempoRemoto tempoexecucaoremoto   
 							,i.descricao       
                             ,i.complexidade   
-                            ,(SELECT CAST(COUNT(1) AS BIT) FROM [ProgramaGestao].[PactoTrabalhoAtividade] WHERE itemCatalogoId = i.itemCatalogoId) temPactoCadastrado
-                            ,(SELECT CAST(COUNT(1) AS BIT) FROM [ProgramaGestao].[CatalogoItemCatalogo] WHERE itemCatalogoId = i.itemCatalogoId) temUnidadeAssociada
-                    FROM [ProgramaGestao].[ItemCatalogo] i
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON i.calculoTempoId = cd.catalogoDominioId
-                    WHERE   (@titulo IS NULL OR i.titulo LIKE '%' + @titulo + '%')
-                            AND (@formaCalculoTempoId IS NULL OR i.calculoTempoId = @formaCalculoTempoId)
-                            AND (@permiteTrabalhoRemoto IS NULL OR i.permiteRemoto = @permiteTrabalhoRemoto)
+                            ,i.definicaocomplexidade   
+                            ,i.entregasesperadas 
+                    FROM programagestao.itemcatalogo i
+	                    INNER JOIN dbo.catalogodominio cd ON i.calculotempoid = cd.catalogodominioid
+                    WHERE   (@titulo IS NULL OR i.titulo LIKE '%' || @titulo || '%')
+                            AND (@formacalculotempoid IS NULL OR i.calculotempoid = @formacalculotempoid)
+                            AND (@permitetrabalhoremoto IS NULL OR i.permiteremoto = @permitetrabalhoremoto)
 
                     ORDER BY i.titulo, i.complexidade
 
@@ -91,11 +91,11 @@
                     FETCH NEXT @PageSize ROWS ONLY;
 
                     SELECT COUNT(*)
-                    FROM [ProgramaGestao].[ItemCatalogo] i
-	                    INNER JOIN [dbo].[CatalogoDominio] cd ON i.calculoTempoId = cd.catalogoDominioId
-                    WHERE   (@titulo IS NULL OR i.titulo LIKE '%' + @titulo + '%')
-                            AND (@formaCalculoTempoId IS NULL OR i.calculoTempoId = @formaCalculoTempoId)
-                            AND (@permiteTrabalhoRemoto IS NULL OR i.permiteRemoto = @permiteTrabalhoRemoto)
+                    FROM programagestao.itemcatalogo i
+	                    INNER JOIN dbo.catalogodominio cd ON i.calculotempoid = cd.catalogodominioid
+                    WHERE   (@titulo IS NULL OR i.titulo = '%' || @titulo || '%')
+                            AND (@formacalculotempoid IS NULL OR i.calculotempoid = @formacalculotempoid)
+                            AND (@permitetrabalhoremoto IS NULL OR i.permiteremoto = @permitetrabalhoremoto)
                 ";
             }
         }
@@ -107,18 +107,18 @@
             get
             {
                 return @"
-					SELECT  i.itemCatalogoId 
+					SELECT  i.itemcatalogoid 
 							,i.titulo             
-							,i.calculoTempoId formaCalculoTempoItemCatalogoId
-							,cd.descricao formaCalculoTempoItemCatalogo 
-							,i.permiteRemoto permiteTrabalhoRemoto 
-							,i.tempoPresencial tempoExecucaoPresencial
-							,i.tempoRemoto tempoExecucaoRemoto   
+							,i.calculotempoid formacalculotempoitemcatalogoid
+							,cd.descricao formacalculotempoitemcatalogo 
+							,i.permiteremoto permitetrabalhoremoto 
+							,i.tempoPresencial tempoexecucaopresencial
+							,i.tempoRemoto tempoexecucaoremoto   
 							,i.descricao        
                             ,i.complexidade   
-                            ,i.definicaoComplexidade   
-                            ,i.entregasEsperadas
-                    FROM [ProgramaGestao].[ItemCatalogo] i
+                            ,i.definicaocomplexidade   
+                            ,i.entregasesperadas
+                    FROM programagestao.itemcatalogo i
                     ORDER BY i.titulo, i.complexidade   
                 ";
             }

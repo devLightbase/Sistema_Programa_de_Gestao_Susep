@@ -8,26 +8,26 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PessoaModalidadeExecucao> builder)
         {
-            builder.ToTable("PessoaModalidadeExecucao", "ProgramaGestao");
+            builder.ToTable("pessoamodalidadeexecucao", "programagestao");
 
             builder.HasKey(p => p.PessoaModalidadeExecucaoId);
 
             builder.Ignore(p => p.Id)
                    .Ignore(p => p.RequestedHashCode);
 
-            builder.Property(p => p.PessoaId).HasColumnName("pessoaId");
-            builder.Property(p => p.ModalidadeExecucaoId).HasColumnName("modalidadeExecucaoId");
+            builder.Property(p => p.PessoaId).HasColumnName("pessoaid");
+            builder.Property(p => p.ModalidadeExecucaoId).HasColumnName("modalidadeexecucaoid");
 
 
             builder.HasOne(p => p.Pessoa)
                    .WithMany(p => p.ModalidadesExecucao)
                    .HasForeignKey(p => p.PessoaId)
-                   .HasConstraintName("FK_PessoaModalidadeExecucao_Pessoa");
+                   .HasConstraintName("fk_pessoamodalidadeexecucao_pessoa");
 
             builder.HasOne(p => p.ModalidadeExecucao)
                    .WithMany(p => p.PessoasModalidadesExecucao)
                    .HasForeignKey(p => p.ModalidadeExecucaoId)
-                   .HasConstraintName("FK_PessoaModalidadeExecucao_ModalidadeExecucao");
+                   .HasConstraintName("fk_pessoamodalidadeexecucao_modalidadeexecucao");
 
         }
 

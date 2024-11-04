@@ -15,7 +15,7 @@ import { ApplicationStateService } from '../../../../../shared/services/applicat
 @Component({
   selector: 'atividades-pacto-atual',
   templateUrl: './atividades-pacto-atual.component.html',
-  styleUrls: ['./atividades-pacto-atual.component.css'],  
+  styleUrls: ['./atividades-pacto-atual.component.css'],
 })
 export class AtividadesPactoAtualComponent implements OnInit {
 
@@ -109,11 +109,14 @@ export class AtividadesPactoAtualComponent implements OnInit {
   }
 
   verificarSeUsuarioPodeAceitar() {
-    this.usuarioPodeAceitar =
-      (this.perfilUsuario.pessoaId === this.dadosPacto.value.pessoaId &&
-        this.perfilUsuario.pessoaId.toString() !== this.dadosPacto.value.responsavelEnvioAceite.toString()) ||
-      (this.perfilUsuario.pessoaId !== this.dadosPacto.value.pessoaId &&
-        this.dadosPacto.value.pessoaId.toString() === this.dadosPacto.value.responsavelEnvioAceite.toString());
+    if (this.perfilUsuario.pessoaId && this.dadosPacto.value.responsavelEnvioAceite) {
+      this.usuarioPodeAceitar =
+        (this.perfilUsuario.pessoaId === this.dadosPacto.value.pessoaId &&
+          this.perfilUsuario.pessoaId.toString() !== this.dadosPacto.value.responsavelEnvioAceite.toString()) ||
+        (this.perfilUsuario.pessoaId !== this.dadosPacto.value.pessoaId &&
+          this.dadosPacto.value.pessoaId.toString() === this.dadosPacto.value.responsavelEnvioAceite.toString());
+    }
+
   }
 
   preencherPlano(dados: IPactoTrabalho) {
@@ -161,12 +164,12 @@ export class AtividadesPactoAtualComponent implements OnInit {
             if (resultado.retorno) {
               this.dadosPacto.next(resultado.retorno);
             }
-          });      
+          });
       }
     );
   }
 
-  aceitar() {    
+  aceitar() {
     if (this.dadosPacto.value.pessoaId === this.perfilUsuario.pessoaId) {
 
       this.planoTrabalhoDataService.ObterTermoAceite(this.dadosPacto.value.planoTrabalhoId).subscribe(

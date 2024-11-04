@@ -18,6 +18,8 @@ using Susep.SISRH.Application.ViewModels;
 using Susep.SISRH.Application.Queries.RawSql;
 using Susep.SISRH.Application.Requests;
 using Susep.SISRH.Domain.Enums;
+using Microsoft.Data.SqlClient;
+using Npgsql;
 
 namespace Susep.SISRH.Application.Queries.Concrete
 {
@@ -38,7 +40,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@pactoTrabalhoId", pactoTrabalhoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -62,7 +64,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             parameters.Add("@situacaoEmExecucao", (int)SituacaoPactoTrabalhoEnum.EmExecucao, DbType.Int32, ParameterDirection.Input);
             parameters.Add("@pessoaId", request.UsuarioLogadoId, DbType.Int64, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -82,7 +84,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@planoTrabalhoId", planoTrabalhoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -102,7 +104,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@pactoTrabalhoId", pactoTrabalhoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -137,7 +139,8 @@ namespace Susep.SISRH.Application.Queries.Concrete
             else
                 query = query.Replace("#CONTROLE#", string.Empty);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            query = query.Replace("#UNIDADES#", string.Empty);
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -162,7 +165,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@pactoTrabalhoId", pactoTrabalhoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -182,7 +185,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@pactoTrabalhoId", pactoTrabalhoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 
@@ -202,7 +205,7 @@ namespace Susep.SISRH.Application.Queries.Concrete
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("@pactoTrabalhoId", pactoTrabalhoId, DbType.Guid, ParameterDirection.Input);
 
-            using (var connection = new SqlConnection(Configuration.GetConnectionString("DefaultConnection")))
+            using (var connection = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
 

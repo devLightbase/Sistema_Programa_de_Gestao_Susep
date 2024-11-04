@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Susep.SISRH.Application.Queries.Abstractions;
 using Susep.SISRH.Application.Queries.Concrete;
 using Susep.SISRH.Domain.AggregatesModel.AssuntoAggregate;
@@ -10,6 +11,12 @@ using Susep.SISRH.Domain.AggregatesModel.ObjetoAggregate;
 using Susep.SISRH.Domain.AggregatesModel.PactoTrabalhoAggregate;
 using Susep.SISRH.Domain.AggregatesModel.PessoaAggregate;
 using Susep.SISRH.Domain.AggregatesModel.PlanoTrabalhoAggregate;
+using Susep.SISRH.Domain.AggregatesModel.UnidadeAggregate;
+using Susep.SISRH.Domain.AggregatesModel.UnidadesAggregate;
+using Susep.SISRH.Domain.AggregatesModel.SituacaoAggregate;
+using Susep.SISRH.Domain.AggregatesModel.TipoFuncaoAggregate;
+using Susep.SISRH.Domain.AggregatesModel.TipoVinculoAggregate;
+using Susep.SISRH.Domain.AggregatesModel.FeriadoAggregate;
 using Susep.SISRH.Infrastructure.Contexts;
 using Susep.SISRH.Infrastructure.Repositories;
 using SUSEP.Framework.Data.Abstractions.UnitOfWorks;
@@ -22,11 +29,13 @@ namespace Susep.SISRH.Application.Configurations
     public class ApplicationModuleConfiguration : Autofac.Module
     {
         private IConfiguration Configuration { get; }
+        private IServiceCollection services { get; }
 
         public ApplicationModuleConfiguration() { }
-        public ApplicationModuleConfiguration(IConfiguration configuration)
+        public ApplicationModuleConfiguration(IConfiguration configuration, IServiceCollection _serviceCollection)
         {
             Configuration = configuration;
+            services = _serviceCollection;
         }
 
         protected override void Load(ContainerBuilder builder)
@@ -37,7 +46,7 @@ namespace Susep.SISRH.Application.Configurations
             builder.Register(ctx =>
             {
                 DbContextOptionsBuilder<SISRHDbContext> options = new DbContextOptionsBuilder<SISRHDbContext>();
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
 
                 return new SISRHDbContext(options.Options);
             })
@@ -65,6 +74,12 @@ namespace Susep.SISRH.Application.Configurations
             builder.RegisterType<PactoTrabalhoRepository>().As<IPactoTrabalhoRepository>().InstancePerLifetimeScope();
             builder.RegisterType<PlanoTrabalhoRepository>().As<IPlanoTrabalhoRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AssuntoRepository>().As<IAssuntoRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<SituacaoRepository>().As<ISituacaoRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<TipoFuncaoRepository>().As<ITipoFuncaoRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<TipoVinculoRepository>().As<ITipoVinculoRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<FeriadoRepository>().As<IFeriadoRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<UnidadeRepository>().As<IUnidadeRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<UnidadesRepository>().As<IUnidadesRepository>().InstancePerLifetimeScope();
             builder.RegisterType<ObjetoRepository>().As<IObjetoRepository>().InstancePerLifetimeScope();
 
             builder.RegisterType<EmailHelper>().As<IEmailHelper>().InstancePerLifetimeScope();

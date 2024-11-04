@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PlanoTrabalhoAtividadeCandidatoHistorico> builder)
         {
-            builder.ToTable("PlanoTrabalhoAtividadeCandidatoHistorico", "ProgramaGestao");
+            builder.ToTable("planotrabalhoatividadecandidatohistorico", "programagestao");
 
             builder.HasKey(p => p.PlanoTrabalhoAtividadeCandidatoHistoricoId);
 
@@ -18,24 +18,24 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.PlanoTrabalhoAtividadeCandidatoHistoricoId)
-                .HasColumnName("planoTrabalhoAtividadeCandidatoHistoricoId")
+                .HasColumnName("planotrabalhoatividadecandidatohistoricoid")
                 .ValueGeneratedOnAdd();
             
-            builder.Property(p => p.PlanoTrabalhoAtividadeCandidatoId).HasColumnName("planoTrabalhoAtividadeCandidatoId");
-            builder.Property(p => p.SituacaoId).HasColumnName("situacaoId");
+            builder.Property(p => p.PlanoTrabalhoAtividadeCandidatoId).HasColumnName("planotrabalhoatividadecandidatoid");
+            builder.Property(p => p.SituacaoId).HasColumnName("situacaoid");
             builder.Property(p => p.Data).HasColumnName("data");
             builder.Property(p => p.Descricao).HasColumnName("descricao");
-            builder.Property(p => p.ResponsavelOperacao).HasColumnName("responsavelOperacao");            
+            builder.Property(p => p.ResponsavelOperacao).HasColumnName("responsaveloperacao");            
 
             builder.HasOne(p => p.PlanoTrabalhoAtividadeCandidato)
                    .WithMany(p => p.Historico)
                    .HasForeignKey(p => p.PlanoTrabalhoAtividadeCandidatoId)
-                   .HasConstraintName("FK_PlanoTrabalhoAtividadeCandidatoHistorico_PlanoTrabalhoAtividadeCandidato");
+                   .HasConstraintName("fk_planotrabalhoatividadecandidatohistorico_planotrabalhoativid");
 
             builder.HasOne(p => p.Situacao)
                    .WithMany(p => p.PlanoTrabalhoAtividadeCandidatoHistoricos)
                    .HasForeignKey(p => p.SituacaoId)
-                   .HasConstraintName("FK_PlanoTrabalhoAtividadeCandidatoHistorico_Situacao");
+                   .HasConstraintName("fk_planotrabalhoatividadecandidatohistorico_situacao");
 
         }
 

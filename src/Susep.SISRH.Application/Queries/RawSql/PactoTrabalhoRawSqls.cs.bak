@@ -1,0 +1,314 @@
+﻿namespace Susep.SISRH.Application.Queries.RawSql
+{
+    public static class PactoTrabalhoRawSqls
+    {
+
+        public static string ObterPorChave
+        {
+            get
+            {
+                return @"
+					SELECT   p.pactotrabalhoid
+                            ,p.planotrabalhoid
+                            ,p.unidadeid
+                            ,u.undsiglacompleta unidade     
+                            ,p.pessoaid
+                            ,pe.pesnome pessoa
+                            ,p.datainicio    
+                            ,p.datafim       
+                            ,p.formaexecucaoid
+		                    ,cd1.descricao formaExecucao
+                            ,p.situacaoid
+		                    ,cd2.descricao situacao                            
+                            ,cargahorariadiaria
+                            ,percentualexecucao
+                            ,relacaoprevistorealizado
+                            ,tempototaldisponivel
+                            ,pl.tempocomparecimento                    
+							,h.responsaveloperacao responsavelEnvioAceite
+                    FROM programagestao.pactotrabalho p
+	                    INNER JOIN programagestao.planotrabalho pl ON p.planotrabalhoid = pl.planotrabalhoid
+	                    INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid   
+	                    INNER JOIN dbo.pessoa pe ON pe.pessoaid = p.pessoaid 
+	                    INNER JOIN dbo.catalogodominio cd1 ON p.formaexecucaoid = cd1.catalogodominioid 
+	                    INNER JOIN dbo.catalogodominio cd2 ON p.situacaoid = cd2.catalogodominioid 
+						LEFT OUTER JOIN programagestao.pactotrabalhohistorico h ON p.pactotrabalhoid = h.pactotrabalhoid AND h.situacaoid = 402
+                    WHERE p.pactotrabalhoid = @pactotrabalhoid
+                ";
+            }
+        }
+
+
+        public static string ObterAtual
+        {
+            get
+            {
+                return @"
+					SELECT
+                            p.pactotrabalhoid
+                            ,p.planotrabalhoid
+                            ,p.unidadeid
+                            ,u.undsiglacompleta unidade     
+                            ,p.pessoaid
+                            ,pe.pesnome pessoa
+                            ,p.datainicio    
+                            ,p.datafim       
+                            ,p.formaexecucaoid
+		                    ,cd1.descricao formaExecucao
+                            ,p.situacaoid
+		                    ,cd2.descricao situacao                            
+                            ,cargahorariadiaria
+                            ,percentualexecucao
+                            ,relacaoprevistorealizado
+                            ,tempototaldisponivel
+                            ,pl.tempocomparecimento
+                    FROM programagestao.pactotrabalho p
+                        INNER JOIN programagestao.pactotrabalhohistorico h ON h.pactotrabalhoid = p.pactotrabalhoid
+	                    INNER JOIN programagestao.planotrabalho pl ON p.planotrabalhoid = pl.planotrabalhoid
+	                    INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid   
+	                    INNER JOIN dbo.pessoa pe ON pe.pessoaid = p.pessoaid 
+	                    INNER JOIN dbo.catalogodominio cd1 ON p.formaexecucaoid = cd1.catalogodominioid 
+	                    INNER JOIN dbo.catalogodominio cd2 ON p.situacaoid = cd2.catalogodominioid 
+                    WHERE p.situacaoid in (@situacaoRascunho, @situacaoEnviadoAceite, @situacaoAceito, @situacaoEmExecucao)
+                        AND p.pessoaid = @pessoaid
+                    ORDER BY p.datainicio 
+                    LIMIT 1 
+                ";
+            }
+        }
+
+        public static string ObterPactosTrabalhoPorPlano
+        {
+            get
+            {
+                return @"
+					SELECT  p.pactotrabalhoid
+                            ,p.planotrabalhoid
+                            ,p.unidadeid
+                            ,u.undsiglacompleta unidade     
+                            ,p.pessoaid
+                            ,pe.pesnome pessoa
+                            ,p.datainicio    
+                            ,p.datafim       
+                            ,p.formaexecucaoid
+		                    ,cd1.descricao formaExecucao
+                            ,p.situacaoid
+		                    ,cd2.descricao situacao
+                    FROM programagestao.pactotrabalho p
+	                    INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid   
+	                    INNER JOIN dbo.pessoa pe ON pe.pessoaid = p.pessoaid 
+	                    INNER JOIN dbo.catalogodominio cd1 ON p.formaexecucaoid = cd1.catalogodominioid 
+	                    INNER JOIN dbo.catalogodominio cd2 ON p.situacaoid = cd2.catalogodominioid 
+                    WHERE p.planotrabalhoid = @planotrabalhoid
+                    ORDER BY p.datainicio DESC, p.datafim DESC, pe.pesnome
+                ";
+            }
+        }
+
+        public static string ObterHistorico
+        {
+            get
+            {
+                return @"
+					SELECT  p.pactotrabalhoid
+                            ,p.pactotrabalhohistoricoid
+                            ,situacaoid
+							,cd.descricao situacao 
+                            ,observacoes
+                            ,CASE WHEN pe.pesnome IS NULL 
+                                        THEN responsaveloperacao 
+                                        ELSE pe.pesnome 
+                                END AS responsaveloperacao
+                            ,dataoperacao
+                    FROM programagestao.pactotrabalhohistorico p  
+	                    INNER JOIN dbo.catalogodominio cd ON p.situacaoid = cd.catalogodominioid 
+	                    LEFT OUTER JOIN dbo.pessoa pe ON p.responsaveloperacao = CAST(pe.pessoaid AS VARCHAR(12))
+                    WHERE p.pactotrabalhoid = @pactotrabalhoid
+                    ORDER BY dataOperacao DESC
+                ";
+            }
+        }
+
+        public static string ObterPorFiltro
+        {
+            get
+            {
+                return @"
+					SELECT  p.pactotrabalhoid
+                            ,p.planotrabalhoid
+                            ,p.unidadeid
+                            ,u.undsiglacompleta unidade   
+                            ,p.pessoaid
+                            ,pe.pesnome pessoa
+                            ,p.datainicio    
+                            ,p.datafim   
+                            ,p.formaexecucaoid
+		                    ,cd1.descricao formaExecucao
+                            ,p.situacaoid
+		                    ,cd2.descricao situacao
+                            ,p.percentualexecucao
+                    FROM programagestao.pactotrabalho p
+	                    INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid     
+	                    INNER JOIN dbo.pessoa pe ON pe.pessoaid = p.pessoaid   
+	                    INNER JOIN dbo.catalogodominio cd1 ON p.formaexecucaoid = cd1.catalogodominioid 
+	                    INNER JOIN dbo.catalogodominio cd2 ON p.situacaoid = cd2.catalogodominioid 
+                    WHERE   (@pessoaid IS NULL OR p.pessoaid = @pessoaid)
+                            AND (@situacaoid IS NULL OR p.situacaoid = @situacaoid)
+                            AND (@formaexecucaoid IS NULL OR p.formaexecucaoid = @formaexecucaoid)
+                            AND (@datainicio IS NULL OR p.datafim >= @datainicio)
+                            AND (@datafim IS NULL OR p.datainicio <= @datafim)
+
+                    ORDER BY datainicio DESC, datafim DESC, u.undsiglacompleta
+
+                    OFFSET @Offset ROWS
+                    FETCH NEXT @PageSize ROWS ONLY;
+
+                    SELECT COUNT(*)
+                    FROM programagestao.pactotrabalho p
+	                    INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = p.unidadeid     
+	                    INNER JOIN dbo.pessoa pe ON pe.pessoaid = p.pessoaid   
+	                    INNER JOIN dbo.catalogodominio cd1 ON p.formaexecucaoid = cd1.catalogodominioid 
+	                    INNER JOIN dbo.catalogodominio cd2 ON p.situacaoid = cd2.catalogodominioid 
+                    WHERE   (@pessoaid IS NULL OR p.pessoaid = @pessoaid)
+                            AND (@situacaoid IS NULL OR p.situacaoid = @situacaoid)
+                            AND (@datainicio IS NULL OR p.datafim >= @datainicio)
+                            AND (@datafim IS NULL OR p.datainicio <= @datafim)
+                ";
+            }
+        }
+
+		public static string ControleAcesso
+        {
+            get
+            {
+                return @"
+                            INNER JOIN( SELECT u1.unidadeid, pe.pessoaid
+                                        FROM dbo.vw_unidadesiglacompleta u1
+                                        LEFT OUTER JOIN dbo.pessoa pe ON pe.unidadeid = u1.unidadeid
+                                        INNER JOIN (SELECT u.undsiglacompleta
+                                                        FROM dbo.pessoa pe
+                                                            LEFT OUTER JOIN dbo.pessoaalocacaotemporaria a ON a.pessoaid = pe.pessoaid AND a.datafim IS NULL
+                                                            INNER JOIN dbo.tipofuncao tf ON tf.tipofuncaoid = pe.tipofuncaoid
+
+                                                            INNER JOIN dbo.vw_unidadesiglacompleta u ON u.unidadeid = COALESCE(a.unidadeid, pe.unidadeid)
+
+                                                        WHERE pe.pessoaid = @pessoalogadaid AND tf.tfnindicadorchefia = 1
+                                                    ) chefe ON(u1.undsiglacompleta like chefe.undsiglacompleta + '%')
+                                        
+                                        UNION 
+
+                                        SELECT pe.unidadeid, pe.pessoaid FROM dbo.pessoa pe WHERE pe.pessoaid = @pessoalogadaid
+                                       ) controle ON controle.pessoaid = p.pessoaid OR controle.unidadeid = p.unidadeid
+                        ";
+            }
+        }
+        public static string ObterAtividades
+        {
+            get
+            {
+                return @"
+					SELECT  p.pactotrabalhoatividadeid
+                            ,p.pactotrabalhoid
+                            ,p.itemcatalogoid
+                            ,CASE
+						    WHEN i.complexidade IS NULL OR i.complexidade = '' THEN i.titulo || ''
+						    ELSE i.titulo || ' - ' || i.complexidade
+						  	END 
+						  	AS itemcatalogo
+                            ,i.complexidade as itemCatalogoComplexidade
+							,i.calculotempoid formaCalculoTempoitemcatalogoId
+                            ,p.quantidade
+                            ,p.tempoprevistoporitem
+                            ,p.tempoprevistototal
+                            ,p.datainicio
+                            ,p.datafim
+                            ,p.temporealizado
+                            ,p.tempohomologado
+                            ,p.situacaoid
+		                    ,cd.descricao situacao
+		                    ,p.descricao
+                            ,p.nota
+                            ,p.justificativa
+                            ,modalidadeexecucaoid
+                            ,CASE WHEN p.modalidadeexecucaoid IS NULL 
+								THEN 
+									CASE WHEN pt.formaExecucaoId = 101 THEN 0 ELSE 1 END				 						
+								ELSE 
+									CASE WHEN p.modalidadeexecucaoid = 101 THEN 0 ELSE 1 END
+								END execucaoremota
+							 
+							,p.consideracoesconclusao as consideracoes
+							FROM programagestao.pactotrabalhoatividade p
+								INNER JOIN programagestao.pactotrabalho pt ON p.pactotrabalhoid = pt.pactotrabalhoid
+	                            INNER JOIN programagestao.itemcatalogo i ON p.itemcatalogoid = i.itemcatalogoid 
+	                            INNER JOIN dbo.catalogodominio cd ON p.situacaoid = cd.catalogodominioid 
+							WHERE p.pactotrabalhoid = @pactotrabalhoid;
+                ";
+            }
+        }
+        public static string ObterSolicitacoes
+        {
+            get
+            {
+                return @"
+					SELECT  p.pactotrabalhosolicitacaoid                          
+                            ,pactotrabalhosolicitacaoid
+                            ,pactotrabalhoid
+                            ,tiposolicitacaoid
+                            ,cd.descricao tipoSolicitacao
+                            ,datasolicitacao
+                            ,solicitante as solicitanteId
+                            ,CASE
+						    WHEN pe.pesnome IS NULL THEN solicitante
+						    ELSE ''
+						  	END 
+						  	AS solicitante
+                            ,dadossolicitacao
+                            ,observacoessolicitante
+                            ,analisado
+                            ,dataanalise
+                            ,analista
+                            ,aprovado
+                            ,observacoesanalista
+                    FROM programagestao.pactotrabalhosolicitacao p
+	                    INNER JOIN dbo.catalogodominio cd ON p.tiposolicitacaoid = cd.catalogodominioid  
+	                    LEFT OUTER JOIN dbo.pessoa pe ON cast(pe.pessoaid as varchar(15))= solicitante
+                    WHERE p.pactotrabalhoid = @pactotrabalhoid
+                    ORDER BY datasolicitacao DESC, dataanalise DESC;
+                ";
+            }
+        }
+
+        public static string ObterAssuntosDoPactoEPlanoTrabalho
+        {
+            get
+            {
+                return @"
+                    -- Recuperar assuntos do plano de trabalho
+                    SELECT NULL AS pactotrabalhoatividadeid,
+                           ptai.itemcatalogoid,
+	                       a.assuntoid,
+                           a.valor AS descricao
+                    FROM programagestao.planotrabalhoatividadeitem ptai 
+                    INNER JOIN programagestao.planotrabalhoatividade pta ON ptai.planotrabalhoatividadeid = pta.planotrabalhoatividadeid
+                    INNER JOIN programagestao.planotrabalhoatividadeassunto ptaa ON pta.planotrabalhoatividadeid = ptaa.planotrabalhoatividadeid
+                    INNER JOIN programagestao.assunto a ON ptaa.assuntoid = a.assuntoid
+                    INNER JOIN programagestao.pactotrabalho pct ON pct.planotrabalhoid = pta.planotrabalhoid
+                    WHERE pct.pactotrabalhoid = @pactotrabalhoid
+                    AND   a.ativo = 1;
+
+                    -- Recuperar assuntos dos pacto de trabalho
+                    SELECT pta.pactotrabalhoatividadeid,
+                           pta.itemcatalogoid,
+                           a.assuntoid,
+	                       a.valor AS descricao
+                    FROM programagestao.pactotrabalhoatividadeassunto ptaa
+                    INNER JOIN programagestao.pactotrabalhoatividade pta ON ptaa.pactotrabalhoatividadeid = pta.pactotrabalhoatividadeid
+                    INNER JOIN programagestao.assunto a ON ptaa.assuntoid = a.assuntoid
+                    WHERE pta.pactotrabalhoid = @pactotrabalhoid
+                    AND   a.ativo = 1;
+                ";
+            }
+        }
+    }
+}

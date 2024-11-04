@@ -105,7 +105,6 @@ export class DataService {
     let options = {};
     this.setHeaders(options,true);
 
-    console.log('data.service deleting');
 
     this.applicationState.changeLoadingStatus(true);
 
@@ -202,7 +201,7 @@ export class DataService {
           error.error.validacoes.map((e: string) => {
               return e.trim().endsWith('.')? `${ e.trim() } `: `${ e.trim() }. `
           }):
-          "Ocorreu um erro ao processar a solicitação.";
+          "Ocorreu um erro ao processar a solicitação. " + error.error.mensagem;
         console.error('Backend - ' +
           `status: ${error.status}, ` +
           `statusText: ${error.statusText}, ` +

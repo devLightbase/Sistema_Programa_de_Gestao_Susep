@@ -8,7 +8,6 @@ namespace Susep.SISRH.Application.Requests
 {
     public class AssuntoFiltroRequest : UsuarioLogadoRequest
     {
-
         [DataMember(Name = "valor")]
         public String Valor { get; set; }
 

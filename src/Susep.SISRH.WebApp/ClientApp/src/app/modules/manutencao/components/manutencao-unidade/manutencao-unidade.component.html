@@ -1,0 +1,90 @@
+<section>
+    <div class="container">
+        <header class="content-header pb-5 pb-sm-8 pt-3">
+            <h1 class="content-title">Lista de Unidades</h1>
+            <p>Preencha os campos do formulário para filtrar as unidades</p>
+        </header>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="br-form">
+                <fieldset>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="field">
+                                <div class="br-input">
+                                    <label for="sigla">Sigla</label>
+                                    <input id="sigla" type="text"
+                                        placeholder="Insira um texto para filtrar pela sigla da unidade" name="sigla"
+                                        formControlName="sigla">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <div class="field">
+                                <div class="br-input">
+                                    <label for="nome">Nome</label>
+                                    <input id="nome" type="text"
+                                        placeholder="Insira um texto para filtrar pelo nome da unidade" name="nome"
+                                        formControlName="nome">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="actions justify-content-start">
+                    <button class="br-button is-primary ml-2" type="submit"><i class="fa fa-search"></i>
+                        Filtrar</button>
+                    <secure-input [perfis]="[PerfilEnum.CoordenadorGeral, PerfilEnum.ChefeUnidade]">
+                        <button class="br-button is-secondary" type="button"
+                            [routerLink]="['/manutencao-unidade/cadastro']">Cadastrar Unidade</button>
+                    </secure-input>
+                </div>
+            </div>
+        </form>
+        <div>
+            <div class="table-responsive">
+                <div class="br-table">
+                    <div class="table">
+                        <table class="full-width-table table-striped table-style mat-elevation-z8">
+                            <thead>
+                                <tr>
+                                    <th>Sigla</th>
+                                    <th>Nome</th>
+                                    <th>UF</th>
+                                    <th>E-mail</th>
+                                    <th>Situação</th>
+                                    <th style="width:90px"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of dadosEncontrados?.registros">
+                                    <td>{{item.sigla}}</td>
+                                    <td>{{item.nome}}</td>
+                                    <td>{{item.ufId}}</td>
+                                    <td>{{item.email}}</td>
+                                    <td *ngIf="item.situacaoUnidadeId == 1">Ativo</td>
+                                    <td *ngIf="item.situacaoUnidadeId == 0">Inativo</td>
+                                    <td>
+                                        <a href="javascript:void(0)"
+                                            [routerLink]="['/manutencao-unidade/detalhes/' + item.unidadeId]"><i
+                                                class="fa fa-eye"></i></a>
+                                        <a href="javascript:void(0)"
+                                            [routerLink]="['/manutencao-unidade/editar/' + item.unidadeId]"><i
+                                                class="fa fa-edit"></i></a>
+                                        <a href="javascript:void(0)" (click)="excluirItem(item.unidadeId)"><i
+                                                class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" *ngIf="dadosEncontrados?.controle.totalRegistros === 0"
+                                        class="text-center">Nenhum item encontrado</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-pagination [controlePaginacao]="dadosEncontrados?.controle"
+                            (changePage)="pesquisar($event)"></app-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

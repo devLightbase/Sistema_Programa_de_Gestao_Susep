@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,7 +10,7 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
     {
         public void Configure(EntityTypeBuilder<PlanoTrabalhoAtividadeCriterio> builder)
         {
-            builder.ToTable("PlanoTrabalhoAtividadeCriterio", "ProgramaGestao");
+            builder.ToTable("planotrabalhoatividadecriterio", "programagestao");
 
             builder.HasKey(p => p.PlanoTrabalhoAtividadeCriterioId);
 
@@ -18,21 +18,21 @@ namespace Susep.SISRH.Infrastructure.EntityConfigurations.ProgramaGestao
                    .Ignore(p => p.RequestedHashCode);
 
             builder.Property(p => p.PlanoTrabalhoAtividadeCriterioId)
-                .HasColumnName("planoTrabalhoAtividadeCriterioId")
+                .HasColumnName("planotrabalhoatividadecriterioid")
                 .ValueGeneratedOnAdd(); ;
             
-            builder.Property(p => p.PlanoTrabalhoAtividadeId).HasColumnName("planoTrabalhoAtividadeId");
-            builder.Property(p => p.CriterioId).HasColumnName("criterioId");
+            builder.Property(p => p.PlanoTrabalhoAtividadeId).HasColumnName("planotrabalhoatividadeid");
+            builder.Property(p => p.CriterioId).HasColumnName("criterioid");
 
             builder.HasOne(p => p.Criterio)
                    .WithMany(p => p.CriteriosAtividadesPlanos)
                    .HasForeignKey(p => p.CriterioId)
-                   .HasConstraintName("FK_PlanoTrabalhoCriterioAtividade_Criterio");
+                   .HasConstraintName("fk_planotrabalhocriterioatividade_criterio");
 
             builder.HasOne(p => p.PlanoTrabalhoAtividade)
                    .WithMany(p => p.Criterios)
                    .HasForeignKey(p => p.PlanoTrabalhoAtividadeId)
-                   .HasConstraintName("FK_PlanoTrabalhoCriterioAtividade_PlanoTrabalhoAtividade");
+                   .HasConstraintName("fk_planotrabalhocriterioatividade_planotrabalhoatividade");
 
         }
 

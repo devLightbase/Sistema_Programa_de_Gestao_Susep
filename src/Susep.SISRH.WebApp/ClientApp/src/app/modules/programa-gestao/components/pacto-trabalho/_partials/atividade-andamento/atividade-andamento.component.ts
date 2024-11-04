@@ -113,8 +113,10 @@ export class PactoListaAtividadeAndamentoComponent implements OnInit {
     if (this.perfilUsuario.pessoaId && this.dadosPacto.value.responsavelEnvioAceite) {
 
       this.usuarioPodeAvaliar =
-        (this.perfilUsuario.pessoaId !== this.dadosPacto.value.pessoaId && this.dadosPacto.value.situacaoId >= 405);
+        (this.perfilUsuario.pessoaId !== this.dadosPacto.value.pessoaId && this.dadosPacto.value.situacaoId >= 405 && this.gestorUnidade);
+
     }
+
   }
 
   fillForm() {
@@ -126,11 +128,11 @@ export class PactoListaAtividadeAndamentoComponent implements OnInit {
       descricao: this.atividadeEdicao.descricao,
       consideracoes: this.atividadeEdicao.consideracoes,
     });
-    this.situacaoId = this.atividadeEdicao.situacaoId; 
+    this.situacaoId = this.atividadeEdicao.situacaoId;
     this.form.controls['descricao'].disable();
   }
 
-  carregarAtividades() {    
+  carregarAtividades() {
     this.verificarSeUsuarioPodeAceitar();
 
     this.teletrabalhoParcial = this.dadosPacto.value.formaExecucaoId === 102;
@@ -151,7 +153,7 @@ export class PactoListaAtividadeAndamentoComponent implements OnInit {
 
     this.minDataConclusao = this.formatarData(new Date(this.getDataInicio()));
     this.maxDataConclusao = this.formatarData(new Date());
-      
+
   }
 
   editar(pactoTrabalhoAtividadeId: string) {
@@ -168,7 +170,7 @@ export class PactoListaAtividadeAndamentoComponent implements OnInit {
       consideracoes: atividade.consideracoes
     });
     this.formConsideracoes.disable();
-    this.situacaoIdDetalhes = atividade.situacaoId; 
+    this.situacaoIdDetalhes = atividade.situacaoId;
     this.modalService.open(this.modalConsideracoes, { size: 'sm' });
   }
 
@@ -208,7 +210,7 @@ export class PactoListaAtividadeAndamentoComponent implements OnInit {
       this.form.get('dataFim').setValue(null);
       this.form.get('dataFim').clearValidators();
       this.form.get('tempoRealizado').setValue(null);
-      this.form.get('tempoRealizado').clearValidators(); 
+      this.form.get('tempoRealizado').clearValidators();
       this.form.get('consideracoes').setValue(null);
       this.form.get('consideracoes').clearValidators();
     }
@@ -219,7 +221,7 @@ export class PactoListaAtividadeAndamentoComponent implements OnInit {
       this.form.get('tempoRealizado').setValue(null);
       this.form.get('tempoRealizado').clearValidators();
       this.form.get('consideracoes').clearValidators();
-    }                 
+    }
     else {
       this.form.get('dataInicio').setValidators(Validators.required);
       this.form.get('dataFim').setValidators(Validators.required);
@@ -239,14 +241,14 @@ export class PactoListaAtividadeAndamentoComponent implements OnInit {
   }
 
   alterarDataInicio() {
-    const dataInicio = new Date(this.getDataInicio());    
+    const dataInicio = new Date(this.getDataInicio());
     this.minDataConclusao = this.formatarData(dataInicio);
 
     if (this.form.get('dataFim').value) {
       const dataFim = new Date(this.form.get('dataFim').value);
       if (dataFim < dataInicio)
         this.form.get('dataFim').setValue(null);
-    }    
+    }
   }
 
   avaliar(pactoTrabalhoAtividadeId: string) {

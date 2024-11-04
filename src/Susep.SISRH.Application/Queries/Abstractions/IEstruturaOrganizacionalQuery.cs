@@ -19,6 +19,12 @@ namespace Susep.SISRH.Application.Queries.Abstractions
         Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterComCatalogoCadastradoComboAsync(UsuarioLogadoRequest request);
         
         Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterPessoasComPactoTrabalhoDadosComboAsync(UsuarioLogadoRequest request);
+        Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterPessoasComboAsync(UsuarioLogadoRequest request); 
+        Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterPessoasComboUnidadesAsync(); 
+        Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterUfComboAsync();
+        Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterComboFuncoesAsync();
+        Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterComboVinculosAsync();
+        Task<IApplicationResult<IEnumerable<DadosComboViewModel>>> ObterComboSituacoesAsync();
 
         Task<IApplicationResult<DadosPaginadosViewModel<PlanoTrabalhoViewModel>>> ObterPlanoTrabalhoPorFiltroAsync(PlanoTrabalhoFiltroRequest request);
         Task<IApplicationResult<PlanoTrabalhoViewModel>> ObterPlanoTrabalhoPorChaveAsync(PlanoTrabalhoRequest request);
